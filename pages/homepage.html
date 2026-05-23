@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | CamNorte Event Hub</title>
+    <link rel="stylesheet" href="../css/homepage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="homepage.html" class="logo-group" style="text-decoration: none;">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item active">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-container">
+            <h1>Stay Connected with <br><span class="highlight">Camarines Norte</span></h1>
+
+            <form class="search-bar" id="hero-search">
+                <div class="search-wrapper">
+                    <input type="text" placeholder="Search events, schools, or NGOs..." id="searchInput" autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <section class="stats-ribbon" id="stats-ribbon-container">
+        <div class="stat-item">Loading stats...</div>
+    </section>
+
+    <main class="container">
+        <div class="section-header">
+            <h2 id="events-heading">Recent Collaborative Events</h2>
+        </div>
+
+        <div class="category-strip-wrapper">
+            <div class="category-strip" id="category-strip">
+                <span class="strip-pill active" data-category="all">
+                    <span class="strip-pill-name">All</span>
+                    <span class="strip-pill-count" id="all-count"></span>
+                </span>
+            </div>
+        </div>
+
+        <div id="org-filter-banner" class="org-filter-banner" style="display:none;">
+            <span id="org-filter-label"></span>
+            <a href="homepage.html" class="org-filter-clear">✕ Clear filter</a>
+        </div>
+
+        <div class="event-grid" id="event-grid">
+            <p class="loading-text">Fetching latest events...</p>
+        </div>
+    </main>
+
+    <!-- ============================================= -->
+    <!-- Camarines Norte Facebook Pages Directory      -->
+    <!-- ============================================= -->
+    <section class="news-section">
+        <div class="news-header-wrapper">
+            <div class="section-header" style="margin-bottom: 32px;">
+                <div>
+                    <h2 style="font-size: 2rem; font-weight: 800; color: var(--dark);">Camarines Norte News</h2>
+                    <p style="color: var(--text-muted); margin-top: 4px;">Official pages & accounts from the province</p>
+                </div>
+                <a href="camnews.html" class="news-view-all">View All News →</a>
+            </div>
+        </div>
+        <div class="fb-directory-grid" id="fb-directory-grid">
+            <!-- Directory cards rendered by JS below -->
+        </div>
+    </section>
+
+    <section class="sms-cta">
+        <div class="cta-content">
+            <div class="cta-text">
+                <h3>Never miss a community update</h3>
+                <p>Stay informed about outreach programs and local events. Sign up now to receive real-time SMS notifications directly to your phone.</p>
+            </div>
+            <a href="signup.html" class="cta-button">Sign Up to Receive SMS</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // Read URL Parameters for org/category filter
+        // =============================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterOrg = urlParams.get('org') || '';
+        const filterCat = urlParams.get('category') || 'all';
+
+        // =============================================
+        // Load Stats Ribbon
+        // =============================================
+        async function loadStats() {
+            const statsContainer = document.getElementById('stats-ribbon-container');
+            try {
+                const response = await fetch('../api/stats.php');
+                const result = await response.json();
+
+                if (result.success) {
+                    const s = result.stats;
+                    statsContainer.innerHTML = `
+                        <div class="stat-item">
+                            <span class="stat-number">${s.total_events}</span>
+                            <span class="stat-label">Upcoming Events</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">${s.total_organizations}</span>
+                            <span class="stat-label">Partner Organizations</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">${s.total_users}</span>
+                            <span class="stat-label">Registered Residents</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">${s.completed_events}</span>
+                            <span class="stat-label">Completed Events</span>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statsContainer.innerHTML = `<div class="stat-item">Stats unavailable</div>`;
+            }
+        }
+
+        // =============================================
+        // Load Categories into Flipboard-style Strip
+        // =============================================
+        async function loadCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const strip = document.getElementById('category-strip');
+
+                    // Update the "All" count
+                    document.getElementById('all-count').textContent = result.total_events + ' event(s)';
+
+                    // Reset active state based on URL param
+                    if (filterCat !== 'all') {
+                        document.querySelector('.strip-pill[data-category="all"]').classList.remove('active');
+                    }
+
+                    // Add a strip pill for each category from the API
+                    result.categories.forEach(cat => {
+                        const pill = document.createElement('span');
+                        pill.className = 'strip-pill';
+                        pill.dataset.category = cat.name;
+
+                        // Mark as active if it matches the URL param
+                        if (filterCat === cat.name) {
+                            pill.classList.add('active');
+                        }
+
+                        pill.innerHTML = `
+                            <span class="strip-pill-name">${cat.name}</span>
+                            <span class="strip-pill-count">${cat.event_count} event(s)</span>
+                        `;
+
+                        strip.appendChild(pill);
+                    });
+
+                    // Add click listener on the strip (event delegation)
+                    strip.addEventListener('click', function(e) {
+                        const pill = e.target.closest('.strip-pill');
+                        if (!pill) return;
+
+                        if (pill.classList.contains('active')) return;
+
+                        this.querySelectorAll('.strip-pill').forEach(p => p.classList.remove('active'));
+                        pill.classList.add('active');
+
+                        const selectedCategory = pill.dataset.category;
+                        const orgParam = filterOrg ? '&org=' + encodeURIComponent(filterOrg) : '';
+                        window.location.href = 'homepage.html?category=' + encodeURIComponent(selectedCategory) + orgParam;
+                    });
+
+                    const activePill = strip.querySelector('.strip-pill.active');
+                    if (activePill) {
+                        setTimeout(() => {
+                            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }, 100);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load categories:', error);
+            }
+        }
+
+        // =============================================
+        // Load Partner Organizations
+        // =============================================
+        async function loadPartners() {
+            const scrollContainer = document.getElementById('partners-scroll');
+            try {
+                const response = await fetch('../api/partners.php');
+                const result = await response.json();
+
+                if (result.success && result.partners && result.partners.length > 0) {
+                    scrollContainer.innerHTML = '';
+                    result.partners.forEach(partner => {
+                        const panel = document.createElement('a');
+                        panel.href = `homepage.html?org=${encodeURIComponent(partner.name)}`;
+                        if (filterOrg && partner.name.toLowerCase() === filterOrg.toLowerCase()) {
+                            panel.className = 'partner-panel active';
+                        } else {
+                            panel.className = 'partner-panel';
+                        }
+                        panel.title = partner.name;
+
+                        panel.innerHTML = `
+                            <span class="partner-icon">${partner.icon}</span>
+                            <span class="partner-name">${partner.short_name.replace(/\n/g, '<br>')}</span>
+                        `;
+                        scrollContainer.appendChild(panel);
+                    });
+                } else {
+                    scrollContainer.innerHTML = '<p class="loading-text">No partner organizations found.</p>';
+                }
+            } catch (error) {
+                scrollContainer.innerHTML = '<p class="loading-text">Unable to load organizations.</p>';
+                console.error('Error loading partners:', error);
+            }
+        }
+
+        // =============================================
+        // Load Events (with optional category & org filter)
+        // =============================================
+        async function loadEvents(category, org) {
+            category = category || filterCat;
+            org = org || filterOrg;
+
+            const eventGrid = document.getElementById('event-grid');
+            const heading = document.getElementById('events-heading');
+            const banner = document.getElementById('org-filter-banner');
+            const label = document.getElementById('org-filter-label');
+
+            eventGrid.innerHTML = '<p class="loading-text">Loading events...</p>';
+
+            if (org) {
+                banner.style.display = 'flex';
+                label.innerHTML = `Showing events by <strong>${org}</strong>`;
+                heading.textContent = `Events by ${org}`;
+            } else {
+                banner.style.display = 'none';
+                heading.textContent = 'Recent Collaborative Events';
+            }
+
+            try {
+                let url = '../api/events.php?status=upcoming&limit=20';
+                if (category && category !== 'all') {
+                    url += '&category=' + encodeURIComponent(category);
+                }
+                if (org) {
+                    url += '&org=' + encodeURIComponent(org);
+                }
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.events.length > 0) {
+                    eventGrid.innerHTML = '';
+                    result.events.forEach(event => {
+                        const card = document.createElement('a');
+                        card.href = `event_detail.html?id=${event.id}`;
+                        card.className = 'event-card';
+                        card.style.textDecoration = 'none';
+                        card.style.color = 'inherit';
+
+                        const eventDate = new Date(event.event_date);
+                        const formattedDate = eventDate.toLocaleDateString('en-PH', {
+                            month: 'long', day: 'numeric', year: 'numeric'
+                        });
+
+                        card.innerHTML = `
+                            ${event.cover_image ? `<img src="../${event.cover_image}" alt="${event.title}" class="event-image">` : ''}
+                            <div class="event-content">
+                                <span class="event-category">${event.category_name || 'General'}</span>
+                                <h3 class="event-title">${event.title}</h3>
+                                <p class="event-description">${event.description.substring(0, 120)}${event.description.length > 120 ? '...' : ''}</p>
+                                <div class="event-meta">
+                                    <span class="meta-date">📅 ${formattedDate}</span>
+                                    <span class="meta-location">📍 ${event.location}</span>
+                                    <span class="meta-organizer">🏛️ ${event.organizer}</span>
+                                </div>
+                                ${event.partner_organizations ? `<p class="event-partners"><small>Partners: ${event.partner_organizations}</small></p>` : ''}
+                            </div>
+                        `;
+                        eventGrid.appendChild(card);
+                    });
+                } else if (result.success && result.events.length === 0) {
+                    eventGrid.innerHTML = '<p class="no-events">No upcoming events found. Check back soon!</p>';
+                } else {
+                    eventGrid.innerHTML = '<p class="no-events">Failed to load events. Please try again later.</p>';
+                }
+            } catch (error) {
+                eventGrid.innerHTML = '<p class="no-events">Unable to connect to server.</p>';
+                console.error('Error loading events:', error);
+            }
+        }
+
+        // =============================================
+        // Search with Live Suggestions
+        // =============================================
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const heroSearch = document.getElementById('hero-search');
+
+        let searchTimeout = null;
+
+        // Type labels
+        const typeLabels = {
+            event: 'Event',
+            category: 'Category',
+            organization: 'Org'
+        };
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<span class="search-suggestion-highlight">$1</span>');
+        }
+
+        // Hide suggestions
+        function hideSuggestions() {
+            searchSuggestions.classList.remove('active');
+        }
+
+        // Fetch suggestions from API
+        async function fetchSuggestions(query) {
+            if (query.length < 2) {
+                hideSuggestions();
+                return;
+            }
+
+            searchSuggestions.innerHTML = '<div class="suggestion-loading">Searching...</div>';
+            searchSuggestions.classList.add('active');
+
+            try {
+                const response = await fetch('../api/search.php?q=' + encodeURIComponent(query) + '&limit=8');
+                const result = await response.json();
+
+                if (result.success && result.suggestions.length > 0) {
+                    renderSuggestions(result.suggestions, query);
+                } else {
+                    searchSuggestions.innerHTML = '<div class="suggestion-empty">No results found for "<strong>' + query + '</strong>"</div>';
+                }
+            } catch (error) {
+                searchSuggestions.innerHTML = '<div class="suggestion-empty">Search unavailable. Please try again.</div>';
+                console.error('Search error:', error);
+            }
+        }
+
+        // Render suggestions
+        function renderSuggestions(suggestions, query) {
+            let html = '';
+            suggestions.forEach(item => {
+                const label = typeLabels[item.type] || item.type;
+                const letter = label.charAt(0).toUpperCase();
+                const imgHtml = item.image
+                    ? `<img src="${item.image}" alt="" class="suggestion-image" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.parentElement.querySelector('.fallback-letter')?.remove(); const span=document.createElement('span'); span.className='suggestion-icon fallback-letter'; span.textContent='${letter}'; this.parentElement.appendChild(span);">`
+                    : `<span class="suggestion-icon">${letter}</span>`;
+
+
+
+                html += `
+                    <a href="${item.url}" class="suggestion-item">
+                        ${imgHtml}
+                        <div class="suggestion-info">
+                            <span class="suggestion-label">${highlightMatch(item.label, query)}</span>
+                            <span class="suggestion-subtitle">${item.subtitle || item.type}</span>
+                        </div>
+                        <span class="suggestion-type-badge ${item.type}">${label}</span>
+                    </a>
+                `;
+            });
+            searchSuggestions.innerHTML = html;
+        }
+
+        // Typing with debounce
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(searchTimeout);
+            if (query.length >= 2) {
+                searchTimeout = setTimeout(() => fetchSuggestions(query), 300);
+            } else {
+                hideSuggestions();
+            }
+        });
+
+        // Focus
+        searchInput.addEventListener('focus', function() {
+            const query = this.value.trim();
+            if (query.length >= 2) {
+                fetchSuggestions(query);
+            }
+        });
+
+        // Close on Escape
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideSuggestions();
+                this.blur();
+            }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-bar')) {
+                hideSuggestions();
+            }
+        });
+
+        // Handle form submit
+        heroSearch.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+
+            if (!query) return;
+
+            hideSuggestions();
+
+            // Check if there's a suggestion to navigate to
+            const firstSuggestion = searchSuggestions.querySelector('.suggestion-item');
+            if (firstSuggestion) {
+                window.location.href = firstSuggestion.getAttribute('href');
+                return;
+            }
+
+            // Filter events on page
+            const eventGrid = document.getElementById('event-grid');
+            const cards = eventGrid.querySelectorAll('.event-card');
+            const q = query.toLowerCase();
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+
+                const smsCta = document.querySelector('.sms-cta');
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                    if (smsCta) smsCta.style.display = 'none';
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                    if (smsCta) smsCta.style.display = '';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        // =============================================
+        // Facebook Pages Directory Data (All 18 Pages)
+        // =============================================
+        const fbPages = [
+            { name: 'Camarines Norte News', url: 'https://www.facebook.com/camnortenews', imgId: 'camnortenews' },
+            { name: 'Community Affairs Office', url: 'https://www.facebook.com/cao.camnorte', imgId: 'cao.camnorte' },
+            { name: 'CANORECO', url: 'https://www.facebook.com/canorecobalitaofficial', imgId: 'canorecobalitaofficial' },
+            { name: 'The Future University of Camarines Norte', url: 'https://www.facebook.com/cnscfutureuni', imgId: 'cnscfutureuni' },
+            { name: 'Dong Padilla', url: 'https://www.facebook.com/dongpadilla001', imgId: 'dongpadilla001' },
+            { name: 'Camarines Norte Barangay Affairs Office', url: 'https://www.facebook.com/profile.php?id=61570734971805', imgId: '61570734971805' },
+            { name: 'Provincial Youth Development Office - Camarines Norte', url: 'https://www.facebook.com/pydocamnorte', imgId: 'pydocamnorte' },
+            { name: 'Camarines Norte Provincial Library', url: 'https://www.facebook.com/camnorteprovlibrary', imgId: 'camnorteprovlibrary' },
+            { name: 'Camarines Norte Provincial Information Office', url: 'https://www.facebook.com/piocamnorte', imgId: 'piocamnorte' },
+            { name: 'Camarines Norte Provincial Hospital', url: 'https://www.facebook.com/CNProvincialHospital', imgId: 'CNProvincialHospital' },
+            { name: "Governor's Office Anti-Corruption Team", url: 'https://www.facebook.com/profile.php?id=61564716686592', imgId: '61564716686592' },
+            { name: "I Text Mo Si Dong - Camarines Norte Citizen's Complaint Hotline", url: 'https://www.facebook.com/iTextMosiDongOfficial', imgId: 'iTextMosiDongOfficial' },
+            { name: 'Provincial Agricultural and Fishery Council - CAMARINES NORTE', url: 'https://www.facebook.com/profile.php?id=61572925644090', imgId: '61572925644090' },
+            { name: 'Provincial Social Welfare and Development Office - Camarines Norte', url: 'https://www.facebook.com/pswdocamnorte', imgId: 'pswdocamnorte' },
+            { name: 'Provincial Planning and Development Office - Camarines Norte', url: 'https://www.facebook.com/PPDOCamNorte', imgId: 'PPDOCamNorte' },
+            { name: 'Provincial Disaster Risk Reduction and Management Office - Camarines Norte', url: 'https://www.facebook.com/pdrrmocamnorte', imgId: 'pdrrmocamnorte' },
+            { name: 'Daet Municipal Tourism Office', url: 'https://www.facebook.com/daettourism2019', imgId: 'daettourism2019' },
+            { name: 'Camarines Norte PDAO', url: 'https://www.facebook.com/camarinesnorte.pdao', imgId: 'camarinesnorte.pdao' }
+        ];
+
+        function getHandle(url) {
+            const match = url.match(/facebook\.com\/([^/?]+)/);
+            if (!match) return '';
+            if (match[1] === 'profile.php') {
+                const idMatch = url.match(/id=([^&]+)/);
+                return idMatch ? idMatch[1] : '';
+            }
+            return match[1];
+        }
+
+        // =============================================
+        // Load FB Pages Directory
+        // =============================================
+        function loadFbDirectory() {
+            const grid = document.getElementById('fb-directory-grid');
+            grid.innerHTML = '';
+
+            fbPages.forEach(page => {
+                const handle = getHandle(page.url);
+                const imgSrc = `https://graph.facebook.com/${page.imgId}/picture?type=large`;
+
+                const card = document.createElement('a');
+                card.href = page.url;
+                card.target = '_blank';
+                card.rel = 'noopener';
+                card.className = 'fb-dir-card';
+
+                card.innerHTML = `
+                    <div class="fb-dir-avatar">
+                        <img src="${imgSrc}"
+                             alt="${page.name}"
+                             loading="lazy"
+                             onerror="this.parentElement.innerHTML = '<span class=\\'fb-dir-fallback\\'>${page.name.charAt(0)}</span>'">
+                    </div>
+                    <div class="fb-dir-info">
+                        <span class="fb-dir-name">${page.name}</span>
+                        <span class="fb-dir-handle">@${handle}</span>
+                    </div>
+                    <span class="fb-dir-external">↗</span>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            // Close menu when clicking a nav link
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Initialize on Page Load
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadStats();
+            loadCategories();
+            loadEvents();
+            loadFbDirectory();
+            loadFooterCategories();
+        });
+    </script>
+</body>
+</html>
