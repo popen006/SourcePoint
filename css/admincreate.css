@@ -1,0 +1,263 @@
+:root {
+    --primary: #D35400;
+    --primary-hover: #E67E22;
+    --sidebar-bg: #1A0F08;
+    --main-bg: #FDFBF7;
+    --white: #FFFFFF;
+    --text-main: #2D3436;
+    --text-muted: #636E72;
+    --border: #E8E8E8;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--main-bg);
+    color: var(--text-main);
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-logo {
+    height: 35px;
+}
+
+.brand-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.brand-tagline {
+    font-size: 0.6rem;
+    color: #BDC3C7;
+    text-transform: uppercase;
+}
+
+.side-nav {
+    flex: 1;
+    padding: 10px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 15px;
+    color: #BDC3C7;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    transition: 0.3s;
+    margin-bottom: 5px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.nav-link i {
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout {
+    color: #E74C3C;
+}
+
+/* --- Main Content --- */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 40px;
+    max-width: 1000px;
+}
+
+.content-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.content-header p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* --- Form Styling --- */
+.form-card {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+input,
+select,
+textarea {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #FAFAFA;
+    font-size: 0.9rem;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--primary);
+    background: white;
+}
+
+/* --- Upload Area --- */
+.image-upload-box {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.image-upload-box:hover {
+    background: #fff8f3;
+    border-color: var(--primary);
+}
+
+.image-upload-box i {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.image-upload-box p {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.image-upload-box span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* --- Action Buttons --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-submit {
+    padding: 12px 40px;
+    border-radius: 8px;
+    border: none;
+    background: var(--sidebar-bg);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .full-width {
+        grid-column: span 1;
+    }
+    .main-content {
+        margin-left: 80px;
+        padding: 20px;
+    }
+    .sidebar {
+        width: 80px;
+    }
+    .sidebar .brand-info,
+    .sidebar span {
+        display: none;
+    }
+}

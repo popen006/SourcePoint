@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | User Management</title>
+    <link rel="stylesheet" href="../css/adminusers.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/integ logo.png" alt="Logo" class="side-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">Admin Panel</span>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                <a href="adminoverview.html" class="nav-link"><i>🏠</i> <span>Overview</span></a>
+                <a href="adminevents.html" class="nav-link"><i>📅</i> <span>Manage Events</span></a>
+                <a href="admincreate.html" class="nav-link"><i>➕</i> <span>Create Event</span></a>
+                <a href="adminusers.html" class="nav-link active"><i>👥</i> <span>User Management</span></a>
+                <a href="admincontacts.html" class="nav-link"><i>📨</i> <span>Inquiries</span></a>
+                <a href="adminsms.html" class="nav-link"><i>💬</i> <span>SMS Notifications</span></a>
+                <a href="submissions.html" class="nav-link"><i>📩</i> <span>Submissions</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" id="logoutBtn" class="nav-link logout"><i>⬅</i> <span>Sign Out</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>User Management</h1>
+                <p>View, filter, and manage registered administrators and residents.</p>
+            </header>
+
+            <div class="mini-stats">
+                <div class="m-stat">
+                    <span class="m-label">Total Users</span>
+                    <span class="m-value" id="total-users" style="color: var(--primary);">0</span>
+                </div>
+                <div class="m-stat">
+                    <span class="m-label">Administrators</span>
+                    <span class="m-value" id="total-admins" style="color: #3498db;">0</span>
+                </div>
+                <div class="m-stat">
+                    <span class="m-label">Residents</span>
+                    <span class="m-value" id="total-residents" style="color: #27AE60;">0</span>
+                </div>
+            </div>
+
+            <section class="toolbar-card">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name, email, or username...">
+                </div>
+                <div class="filter-pills" id="filterPills">
+                    <button class="pill active" data-role="all">All</button>
+                    <button class="pill" data-role="admin">Admins</button>
+                    <button class="pill" data-role="resident">Residents</button>
+                </div>
+                <button class="btn-add" id="addUserBtn">
+                    <i class="fa-solid fa-plus"></i> Add Admin
+                </button>
+            </section>
+
+            <div class="table-container">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Username</th>
+                            <th>Mobile</th>
+                            <th>Role</th>
+                            <th>Registered</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-body">
+                        <tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <h2>Add New Administrator</h2>
+            <div id="addUserMsg" class="form-msg"></div>
+            <form class="user-form" id="addUserForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="inputFullname" placeholder="e.g., Juan Dela Cruz" required>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="inputUsername" placeholder="e.g., juandelacruz" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="inputEmail" placeholder="e.g., juan@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="text" id="inputMobile" placeholder="e.g., 09123456789" required>
+                </div>
+                <div class="form-group" style="display:none;">
+                    <label>Role</label>
+                    <select id="inputRole">
+                        <option value="admin" selected>Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Organization (Optional)</label>
+                    <input type="text" id="inputOrganization" placeholder="e.g., LGU Daet">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="inputPassword" placeholder="At least 6 characters" required>
+                        <span class="toggle-pw" onclick="togglePassword('inputPassword', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </div>
+                </div>
+                <div id="addUserMsgBottom" class="form-msg"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelAdd">Cancel</button>
+                    <button type="submit" class="btn-submit">Create Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="closeEditModal">&times;</button>
+            <h2 id="editModalTitle">Edit User</h2>
+            <div id="editUserMsg" class="form-msg"></div>
+            <form class="user-form" id="editUserForm">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="editFullname" placeholder="e.g., Juan Dela Cruz" required>
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="editUsername" placeholder="e.g., juandelacruz" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editEmail" placeholder="e.g., juan@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="text" id="editMobile" placeholder="e.g., 09123456789" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="editRole">
+                        <option value="resident">Resident</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Organization</label>
+                    <input type="text" id="editOrganization" placeholder="e.g., LGU Daet">
+                </div>
+                <div class="form-group">
+                    <label>New Password <span style="font-weight:400;color:var(--text-muted);">(leave blank to keep current)</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="editPassword" placeholder="At least 6 characters">
+                        <span class="toggle-pw" onclick="togglePassword('editPassword', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </div>
+                </div>
+                <div id="editUserMsgBottom" class="form-msg"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelEdit">Cancel</button>
+                    <button type="submit" class="btn-submit">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .password-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+        .password-wrapper input[type="password"], .password-wrapper input[type="text"] { width: 100% !important; padding-right: 40px !important; box-sizing: border-box; }
+        .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; display: flex; align-items: center; padding: 4px; border-radius: 4px; transition: color 0.2s; z-index: 2; background: transparent; }
+        .toggle-pw:hover { color: #333; }
+        .u-name { cursor: pointer; }
+        .u-name:hover { color: #e94560; }
+        .btn-delete { background: none; border: none; cursor: pointer; color: #e74c3c; font-size: 1.1rem; padding: 6px; border-radius: 6px; transition: 0.2s; }
+        .btn-delete:hover { background: #fde8e8; }
+    </style>
+    <script>
+        function togglePassword(inputId, toggleEl) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            toggleEl.innerHTML = isPassword
+                ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+    </script>
+    <script>
+        let currentFilter = 'all';
+        let usersData = [];
+
+        // =============================================
+        // Load Users
+        // =============================================
+        async function loadUsers(role = 'all') {
+            const tbody = document.getElementById('users-body');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Loading...</td></tr>';
+
+            try {
+                let url = '../api/users.php';
+                if (role !== 'all') url += '?role=' + role;
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success) {
+                    usersData = result.users;
+                    const users = result.users;
+                    let adminCount = 0;
+                    let residentCount = 0;
+                    tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No users found.</td></tr>';
+                    } else {
+                        users.forEach(user => {
+                            if (user.role === 'admin') adminCount++;
+                            else residentCount++;
+
+                            const initials = user.fullname.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22'];
+                            const colorIdx = Math.floor(Math.random() * colors.length);
+
+                            const date = new Date(user.created_at);
+                            const formattedDate = date.toLocaleDateString('en-PH', {
+                                month: 'long', day: 'numeric', year: 'numeric'
+                            });
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>
+                                    <div class="user-info">
+                                        <div class="avatar" style="background: ${colors[colorIdx]};">${initials}</div>
+                                        <div>
+                                            <span class="u-name">${user.fullname}</span>
+                                            <span class="u-mail">${user.email}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${user.username}</td>
+                                <td>${user.mobile}</td>
+                                <td><span class="role-badge ${user.role}">${user.role}</span></td>
+                                <td>${formattedDate}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn-delete" title="Delete User" onclick="deleteUser(${user.id}, '${user.fullname.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+
+                    document.getElementById('total-users').textContent = users.length;
+                    document.getElementById('total-admins').textContent = adminCount;
+                    document.getElementById('total-residents').textContent = residentCount;
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">${result.message || 'Failed to load users.'}</td></tr>`;
+                }
+            } catch (error) {
+                document.getElementById('users-body').innerHTML =
+                    '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Connection error. Please try again.</td></tr>';
+                console.error('loadUsers error:', error);
+            }
+        }
+
+        // =============================================
+        // Filter pills
+        // =============================================
+        document.querySelectorAll('#filterPills .pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('#filterPills .pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.role;
+                loadUsers(currentFilter);
+            });
+        });
+
+        // =============================================
+        // Search filter
+        // =============================================
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#users-body tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // =============================================
+        // Modal - Open
+        // =============================================
+        document.getElementById('addUserBtn').addEventListener('click', function() {
+            document.getElementById('addUserModal').style.display = 'flex';
+            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserMsg').className = 'form-msg';
+            document.getElementById('addUserMsg').textContent = '';
+            document.getElementById('addUserMsgBottom').className = 'form-msg';
+            document.getElementById('addUserMsgBottom').textContent = '';
+        });
+
+        // =============================================
+        // Modal - Close
+        // =============================================
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+        }
+
+        document.getElementById('closeModal').addEventListener('click', closeAddUserModal);
+        document.getElementById('cancelAdd').addEventListener('click', closeAddUserModal);
+
+        // Close modal on overlay click
+        document.getElementById('addUserModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddUserModal();
+        });
+
+        // =============================================
+        // Add User Form Submit
+        // =============================================
+        document.getElementById('addUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.btn-submit');
+            const msgBox = document.getElementById('addUserMsg');
+            const msgBoxBottom = document.getElementById('addUserMsgBottom');
+            submitBtn.textContent = 'Creating...';
+            submitBtn.disabled = true;
+            msgBox.className = 'form-msg';
+            msgBoxBottom.className = 'form-msg';
+
+            const fullname = document.getElementById('inputFullname').value.trim();
+            const username = document.getElementById('inputUsername').value.trim();
+            const email = document.getElementById('inputEmail').value.trim();
+            const mobile = document.getElementById('inputMobile').value.trim();
+            const role = document.getElementById('inputRole').value;
+            const organization = document.getElementById('inputOrganization').value.trim();
+            const password = document.getElementById('inputPassword').value;
+
+            // Basic client-side validation
+            if (!fullname || !username || !email || !mobile || !password) {
+                const errorMsg = 'Please fill in all required fields.';
+                msgBox.textContent = '❌ ' + errorMsg;
+                msgBox.className = 'form-msg error';
+                submitBtn.textContent = 'Create User';
+                submitBtn.disabled = false;
+                return;
+            }
+
+                if (password.length < 6) {
+                const errorMsg = 'Password must be at least 6 characters.';
+                msgBox.textContent = '❌ ' + errorMsg;
+                msgBox.className = 'form-msg error';
+                submitBtn.textContent = 'Create Admin';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch('../api/users.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fullname: fullname,
+                        username: username,
+                        email: email,
+                        mobile: mobile,
+                        role: 'admin',
+                        organization: organization,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    msgBox.textContent = '✅ ' + result.message;
+                    msgBox.className = 'form-msg success';
+                    msgBoxBottom.textContent = '';
+                    msgBoxBottom.className = 'form-msg';
+                    this.reset();
+                    setTimeout(() => {
+                        closeAddUserModal();
+                        loadUsers(currentFilter);
+                    }, 1200);
+                } else {
+                    msgBox.textContent = '❌ ' + result.message;
+                    msgBox.className = 'form-msg error';
+                }
+            } catch (error) {
+                msgBox.textContent = '❌ Connection error. Please try again.';
+                msgBox.className = 'form-msg error';
+            } finally {
+                submitBtn.textContent = 'Create Admin';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // =============================================
+        // Edit User - Open Modal (click on user name)
+        // =============================================
+        function openEditUser(userId) {
+            const user = usersData.find(u => u.id == userId);
+            if (!user) return;
+
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('editFullname').value = user.fullname || '';
+            document.getElementById('editUsername').value = user.username || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editMobile').value = user.mobile || '';
+            document.getElementById('editRole').value = user.role || 'resident';
+            document.getElementById('editOrganization').value = user.organization || '';
+            document.getElementById('editPassword').value = '';
+            document.getElementById('editModalTitle').textContent = 'Edit User - ' + user.fullname;
+            document.getElementById('editUserMsg').className = 'form-msg';
+            document.getElementById('editUserMsg').textContent = '';
+            document.getElementById('editUserMsgBottom').className = 'form-msg';
+            document.getElementById('editUserMsgBottom').textContent = '';
+
+            document.getElementById('editUserModal').style.display = 'flex';
+        }
+
+        // Attach click handler via event delegation (since rows are dynamically created)
+        document.getElementById('users-body').addEventListener('click', function(e) {
+            const nameEl = e.target.closest('.u-name');
+            if (nameEl) {
+                const row = nameEl.closest('tr');
+                const nameText = nameEl.textContent;
+                const user = usersData.find(u => u.fullname === nameText);
+                if (user) {
+                    openEditUser(user.id);
+                }
+            }
+        });
+
+        // =============================================
+        // Edit User - Close Modal
+        // =============================================
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+        }
+
+        document.getElementById('closeEditModal').addEventListener('click', closeEditUserModal);
+        document.getElementById('cancelEdit').addEventListener('click', closeEditUserModal);
+
+        document.getElementById('editUserModal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditUserModal();
+        });
+
+        // =============================================
+        // Edit User - Save
+        // =============================================
+        document.getElementById('editUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.btn-submit');
+            const msgBox = document.getElementById('editUserMsg');
+            const msgBoxBottom = document.getElementById('editUserMsgBottom');
+            submitBtn.textContent = 'Saving...';
+            submitBtn.disabled = true;
+            msgBox.className = 'form-msg';
+            msgBoxBottom.className = 'form-msg';
+
+            const userId = document.getElementById('editUserId').value;
+            const fullname = document.getElementById('editFullname').value.trim();
+            const username = document.getElementById('editUsername').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const mobile = document.getElementById('editMobile').value.trim();
+            const role = document.getElementById('editRole').value;
+            const organization = document.getElementById('editOrganization').value.trim();
+            const password = document.getElementById('editPassword').value;
+
+            if (!fullname || !username || !email || !mobile) {
+                const errorMsg = 'Full name, username, email, and mobile are required.';
+                msgBox.textContent = '❌ ' + errorMsg;
+                msgBox.className = 'form-msg error';
+                submitBtn.textContent = 'Save Changes';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            if (password && password.length < 6) {
+                msgBox.textContent = '❌ Password must be at least 6 characters.';
+                msgBox.className = 'form-msg error';
+                submitBtn.textContent = 'Save Changes';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const bodyData = {
+                id: userId,
+                fullname: fullname,
+                username: username,
+                email: email,
+                mobile: mobile,
+                role: role,
+                organization: organization
+            };
+            if (password) {
+                bodyData.password = password;
+            }
+
+            try {
+                const response = await fetch('../api/users.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bodyData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    msgBox.textContent = '✅ ' + result.message;
+                    msgBox.className = 'form-msg success';
+                    setTimeout(() => {
+                        closeEditUserModal();
+                        loadUsers(currentFilter);
+                    }, 1000);
+                } else {
+                    msgBox.textContent = '❌ ' + result.message;
+                    msgBox.className = 'form-msg error';
+                }
+            } catch (error) {
+                msgBox.textContent = '❌ Connection error. Please try again.';
+                msgBox.className = 'form-msg error';
+            } finally {
+                submitBtn.textContent = 'Save Changes';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // =============================================
+        // Delete User with Confirmation
+        // =============================================
+        async function deleteUser(userId, fullname) {
+            if (!confirm(`Are you sure you want to delete user "${fullname}"? This action cannot be undone.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('../api/users.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: userId })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ ' + result.message);
+                    loadUsers(currentFilter);
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Connection error. Please try again.');
+                console.error('deleteUser error:', error);
+            }
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.href = 'homepage.html';
+            } catch (error) {
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        // =============================================
+        // Initialize
+        // =============================================
+        async function initUsersPage() {
+            try {
+                const res = await fetch('../api/check_session.php');
+                const result = await res.json();
+                if (!result.admin) {
+                    window.location.href = 'adminlogin.html';
+                    return;
+                }
+                await loadUsers('all');
+            } catch (e) {
+                window.location.href = 'adminlogin.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initUsersPage);
+    </script>
+
+</body>
+</html>

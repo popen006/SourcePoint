@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Inquiries</title>
+    <link rel="stylesheet" href="../css/submissions.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/integ logo.png" alt="Logo" class="side-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">Admin Panel</span>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                <a href="adminoverview.html" class="nav-link"><i>🏠</i> <span>Overview</span></a>
+                <a href="adminevents.html" class="nav-link"><i>📅</i> <span>Manage Events</span></a>
+                <a href="admincreate.html" class="nav-link"><i>➕</i> <span>Create Event</span></a>
+                <a href="adminusers.html" class="nav-link"><i>👥</i> <span>User Management</span></a>
+                <a href="admincontacts.html" class="nav-link active"><i>📨</i> <span>Inquiries</span></a>
+                <a href="adminsms.html" class="nav-link"><i>💬</i> <span>SMS Notifications</span></a>
+                <a href="submissions.html" class="nav-link"><i>📩</i> <span>Submissions</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="homepage.html" class="nav-link logout" id="logoutBtn"><i>⬅</i> <span>Sign Out</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Inquiries</h1>
+                <p>View and manage inquiries submitted through the contact form.</p>
+            </header>
+
+            <div class="mini-stats">
+                <div class="m-stat">
+                    <span class="m-label">Unread</span>
+                    <span class="m-value" id="unread-count" style="color: #f39c12;">0</span>
+                </div>
+                <div class="m-stat">
+                    <span class="m-label">Total</span>
+                    <span class="m-value" id="total-count" style="color: #27AE60;">0</span>
+                </div>
+            </div>
+
+            <section class="toolbar-card">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name, email, or subject...">
+                </div>
+                <div class="filter-pills" id="filterPills">
+                    <button class="pill active" data-filter="all">All</button>
+                    <button class="pill" data-filter="unread">Unread</button>
+                    <button class="pill" data-filter="read">Read</button>
+                </div>
+            </section>
+
+            <div class="table-container">
+                <table class="submission-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messages-body">
+                        <tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Loading messages...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- View Message Modal -->
+    <div id="detailModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:12px; padding:2rem; max-width:600px; width:90%; max-height:80vh; overflow-y:auto;">
+            <h2 style="margin-bottom:1rem; font-size:1.3rem;">Message Details</h2>
+            <div id="detailContent"></div>
+            <div style="margin-top:1.5rem; display:flex; gap:10px; flex-wrap:wrap;" id="detailActions"></div>
+            <button onclick="closeModal()" style="margin-top:1rem; padding:0.5rem 1rem; background:#eee; border:none; border-radius:6px; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        let messagesData = [];
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        // Load messages
+        async function loadMessages(filter = 'all') {
+            const tbody = document.getElementById('messages-body');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Loading...</td></tr>';
+
+            try {
+                let url = '../api/contact.php';
+                if (filter !== 'all') url += '?filter=' + filter;
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result && result.success) {
+                    messagesData = result.messages;
+                    const messages = result.messages;
+                    tbody.innerHTML = '';
+
+                    if (messages.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No messages found.</td></tr>';
+                    } else {
+                        messages.forEach(msg => {
+                            const date = new Date(msg.created_at);
+                            const formattedDate = date.toLocaleDateString('en-PH', {
+                                month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                            });
+
+                            const initials = msg.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6'];
+                            const colorIdx = Math.floor(Math.random() * colors.length);
+
+                            const isRead = parseInt(msg.is_read) === 1;
+                            const row = document.createElement('tr');
+                            row.style.fontWeight = isRead ? 'normal' : 'bold';
+                            row.innerHTML = `
+                                <td>
+                                    <div class="user-info">
+                                        <div class="avatar" style="background: ${colors[colorIdx]};">${initials}</div>
+                                        <div>
+                                            <span class="u-name">${msg.name}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${msg.email}</td>
+                                <td>${msg.subject || '(No subject)'}</td>
+                                <td>${formattedDate}</td>
+                                <td><span class="status-dot" style="background: ${isRead ? '#27AE60' : '#f39c12'};"></span> ${isRead ? 'Read' : 'Unread'}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn-view" title="View Message" onclick='viewMessage(${JSON.stringify(msg).replace(/'/g, "&#39;")})'>👁️</button>
+                                        ${!isRead ? `<button class="btn-approve" title="Mark as Read" onclick="markAsRead(${msg.id})">✓ Read</button>` : ''}
+                                        <button class="btn-reject" title="Delete" onclick="deleteMessage(${msg.id})">🗑️</button>
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+
+                    document.getElementById('unread-count').textContent = result.unread_count || 0;
+                    document.getElementById('total-count').textContent = messages.length;
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Failed to load messages.</td></tr>`;
+                }
+            } catch (error) {
+                document.getElementById('messages-body').innerHTML = 
+                    '<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">Connection error.</td></tr>'; 
+                console.error('loadMessages error:', error);
+            }
+        }
+
+        // View message details
+        function viewMessage(msg) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailContent');
+            const actions = document.getElementById('detailActions');
+
+            const date = new Date(msg.created_at);
+            const formattedDate = date.toLocaleDateString('en-PH', {
+                month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            content.innerHTML = `
+                <table style="width:100%; border-collapse:collapse;">
+                    <tr><td style="padding:8px; font-weight:600; color:#555; width:140px;">Name:</td><td style="padding:8px;">${msg.name}</td></tr>
+                    <tr><td style="padding:8px; font-weight:600; color:#555;">Email:</td><td style="padding:8px;"><a href="mailto:${msg.email}">${msg.email}</a></td></tr>
+                    <tr><td style="padding:8px; font-weight:600; color:#555;">Subject:</td><td style="padding:8px; font-weight:600;">${msg.subject || '(No subject)'}</td></tr>
+                    <tr><td style="padding:8px; font-weight:600; color:#555;">Date:</td><td style="padding:8px;">${formattedDate}</td></tr>
+                    <tr><td style="padding:8px; font-weight:600; color:#555;">Status:</td><td style="padding:8px;"><strong>${parseInt(msg.is_read) === 1 ? 'Read' : 'Unread'}</strong></td></tr>
+                    <tr><td style="padding:8px; font-weight:600; color:#555; vertical-align:top;">Message:</td>
+                        <td style="padding:8px; white-space:pre-wrap; background:#f9f9f9; border-radius:6px; line-height:1.6;">${msg.message}</td></tr>
+                </table>
+            `;
+
+            actions.innerHTML = '';
+            if (parseInt(msg.is_read) === 0) {
+                actions.innerHTML = `
+                    <button onclick="markAsRead(${msg.id})" style="padding:0.6rem 1.2rem; background:#27AE60; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600;">✓ Mark as Read</button>
+                `;
+            }
+            actions.innerHTML += `
+                <button onclick="deleteMessage(${msg.id})" style="padding:0.6rem 1.2rem; background:#e74c3c; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600;">🗑️ Delete</button>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        // Mark message as read
+        async function markAsRead(id) {
+            try {
+                const res = await fetch('../api/contact.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id, is_read: 1 })
+                });
+                const data = await res.json();
+                document.getElementById('detailModal').style.display = 'none';
+                loadMessages(currentFilter);
+            } catch (e) {
+                alert('Connection error');
+            }
+        }
+
+        // Delete message
+        async function deleteMessage(id) {
+            if (!confirm('Delete this message?')) return;
+            try {
+                const res = await fetch('../api/contact.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id })
+                });
+                const data = await res.json();
+                document.getElementById('detailModal').style.display = 'none';
+                loadMessages(currentFilter);
+            } catch (e) {
+                alert('Connection error');
+            }
+        }
+
+        // Filter clicks
+        document.querySelectorAll('#filterPills .pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('#filterPills .pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                loadMessages(currentFilter);
+            });
+        });
+
+        // Search filter
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#messages-body tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.href = 'homepage.html';
+            } catch (error) {
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        // Initialize
+        async function initContactPage() {
+            try {
+                const res = await fetch('../api/check_session.php');
+                const result = await res.json();
+                if (!result.admin) {
+                    window.location.href = 'adminlogin.html';
+                    return;
+                }
+                await loadMessages('all');
+            } catch (e) {
+                window.location.href = 'adminlogin.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initContactPage);
+    </script>
+
+</body>
+</html>

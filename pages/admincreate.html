@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Create Event</title>
+    <link rel="stylesheet" href="../css/admincreate.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/integ logo.png" alt="Logo" class="side-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">Admin Panel</span>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                  <a href="adminoverview.html" class="nav-link"><i>🏠</i> <span>Overview</span></a>
+                  <a href="adminevents.html" class="nav-link"><i>📅</i> <span>Manage Events</span></a>
+                  <a href="admincreate.html" class="nav-link active"><i>➕</i> <span>Create Event</span></a>
+                  <a href="adminusers.html" class="nav-link"><i>👥</i> <span>User Management</span></a>
+                  <a href="admincontacts.html" class="nav-link"><i>📨</i> <span>Inquiries</span></a>
+                  <a href="adminsms.html" class="nav-link"><i>💬</i> <span>SMS Notifications</span></a>
+                  <a href="submissions.html" class="nav-link"><i>📩</i> <span>Submissions</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="homepage.html" class="nav-link logout"><i>⬅</i> <span>Sign Out</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Create New Event</h1>
+                <p>Fill out the details below to post a new collaborative event.</p>
+            </header>
+
+            <form class="create-event-form" id="createEventForm" enctype="multipart/form-data">
+                <div class="form-card upload-section">
+                    <div class="section-title">Event Cover Photo</div>
+                    <div class="image-upload-box" id="uploadBox" role="button" tabindex="0" aria-label="Upload event cover photo">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Click to upload or drag and drop</p>
+                        <span>PNG, JPG or WEBP (Max 5MB)</span>
+                        <input type="file" id="event-image" name="cover_image" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                    </div>
+                    <div id="imagePreview" style="display:none; margin-top: 10px;">
+                        <img id="previewImg" style="max-width: 200px; border-radius: 8px;">
+                        <button type="button" id="removeImage" style="display:block; margin-top:5px; background:none; border:none; color:#e74c3c; cursor:pointer;">Remove</button>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="section-title">Basic Information</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Event Title</label>
+                            <input type="text" id="eventTitle" placeholder="e.g., Annual Health Summit 2026" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="eventCategory">
+                                <option value="1">Health</option>
+                                <option value="2">Training</option>
+                                <option value="3">Seminar</option>
+                                <option value="4">Outreach</option>
+                                <option value="5">Environment</option>
+                                <option value="6">Education</option>
+                                <option value="7">Livelihood</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="eventLocation" placeholder="City/Municipality, Camarines Norte" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <small style="color:#888; display:block; margin-top:-8px;">Date must be today or later.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="section-title">Event Content</div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="5" id="eventDescription" placeholder="Write a detailed description of the event..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Organizer</label>
+                        <input type="text" id="eventOrganizer" placeholder="e.g., LGU Daet" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Partner Organizations (Comma separated)</label>
+                        <input type="text" id="eventPartners" placeholder="Red Cross, LGU Daet">
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:row; align-items:center; gap:8px; margin-top:15px; justify-content:flex-start; text-align:left;">
+                        <input type="checkbox" id="sendSMS" style="width:16px; height:16px; cursor:pointer; flex-shrink:0;">
+                        <label for="sendSMS" style="font-weight:600; cursor:pointer; user-select:none; margin-bottom:0;">Send SMS Announcement to all registered residents</label>
+                    </div>
+                </div>
+
+                <div id="eventFormMsg" style="display:none; margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem;"></div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="discardBtn">Discard Draft</button>
+                    <button type="submit" class="btn-submit">Post Event</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        // Image Upload Preview
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('event-image');
+
+        // In case CSS/overlay blocks the native click on the file input,
+        // always open picker from the visible upload box.
+        function openFilePicker() {
+            if (fileInput && typeof fileInput.click === 'function') {
+                fileInput.click();
+            }
+        }
+
+        uploadBox.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openFilePicker();
+        });
+
+        uploadBox.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openFilePicker();
+            }
+        });
+
+        fileInput.addEventListener('click', function(e) {
+            // ensure we can still capture the click on some browsers
+            e.stopPropagation();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    document.getElementById('previewImg').src = ev.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadBox').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('removeImage').addEventListener('click', function() {
+            document.getElementById('event-image').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadBox').style.display = 'block';
+        });
+
+        // Set min date to today to prevent past dates
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('eventDate').setAttribute('min', today);
+
+        // Create Event Form Submit
+        document.getElementById('createEventForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Validate date is not in the past
+            const eventDate = document.getElementById('eventDate').value;
+            if (eventDate < today) {
+                const msgBox = document.getElementById('eventFormMsg');
+                msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                msgBox.textContent = '❌ Event date cannot be in the past. Please select today or a future date.';
+                return;
+            }
+
+            const submitBtn = this.querySelector('.btn-submit');
+            const msgBox = document.getElementById('eventFormMsg');
+            submitBtn.textContent = 'Posting...';
+            submitBtn.disabled = true;
+            msgBox.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('eventTitle').value);
+            formData.append('description', document.getElementById('eventDescription').value);
+            formData.append('category_id', document.getElementById('eventCategory').value);
+            formData.append('location', document.getElementById('eventLocation').value);
+            formData.append('event_date', document.getElementById('eventDate').value);
+            formData.append('organizer', document.getElementById('eventOrganizer').value);
+            formData.append('partner_organizations', document.getElementById('eventPartners').value);
+
+            formData.append('send_sms', document.getElementById('sendSMS').checked ? 'true' : 'false');
+
+            const coverImage = document.getElementById('event-image').files[0];
+            if (coverImage) {
+                formData.append('cover_image', coverImage);
+            }
+
+            try {
+                const response = await fetch('../api/events.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    msgBox.style.cssText = 'display:block; background: #d4edda; color: #155724; padding: 0.75rem; border-radius: 8px;';
+                    msgBox.textContent = '✅ Event created successfully!';
+                    this.reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+                    document.getElementById('uploadBox').style.display = 'block';
+                } else {
+                    msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                    msgBox.textContent = '❌ ' + result.message;
+                }
+            } catch (error) {
+                msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                msgBox.textContent = '❌ Connection error. Please try again.';
+            } finally {
+                submitBtn.textContent = 'Post Event';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Discard
+        document.getElementById('discardBtn').addEventListener('click', function() {
+            if (confirm('Discard this draft?')) {
+                document.getElementById('createEventForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('uploadBox').style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>

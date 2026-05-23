@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Admin Portal</title>
+    <link rel="stylesheet" href="../css/adminlogin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo-group">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="signup-wrapper">
+        <div class="signup-card">
+            <div class="card-header">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h1>Admin Portal</h1>
+                <p>Authorized personnel access only</p>
+            </div>
+
+            <div class="signup-form" id="adminLoginForm">
+                <div class="input-group">
+                    <label for="username">Administrator Username</label>
+                    <input type="text" id="username" placeholder="admin" required>
+                </div>
+
+                <div class="input-group">
+                    <div style="display: flex; justify-content: space-between;">
+                        <label for="password">Security Password</label>
+                        <a href="#" style="font-size: 0.75rem; color: #D35400; text-decoration: none; font-weight: 700;">Reset Access</a>
+                    </div>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="new-password" required>
+                        <span class="toggle-pw" onclick="togglePassword('password', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="loginError" style="color: #e74c3c; font-size: 0.85rem; display: none; margin-bottom: 0.5rem;"></div>
+
+                <button type="button" class="btn-primary" id="loginSubmitBtn">
+                    Verify & Login
+                </button>
+            </div>
+
+            <p class="login-prompt">
+                Not an admin? <a href="residentlogin.html">Resident Login</a>
+            </p>
+        </div>
+    </main>
+
+    <style>
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .password-wrapper input { width: 100%; padding-right: 40px !important; }
+        .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; display: flex; align-items: center; padding: 4px; border-radius: 4px; transition: color 0.2s; }
+        .toggle-pw:hover { color: #333; }
+    </style>
+
+    <script>
+        function togglePassword(inputId, toggleEl) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            toggleEl.innerHTML = isPassword
+                ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                
+                if (result.logged_in) {
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        const loginError = document.getElementById('loginError');
+
+        // =============================================
+        // Login function — called only by JS, never by native form submit
+        // =============================================
+        async function handleLogin() {
+            const usernameVal = document.getElementById('username').value;
+            const passwordVal = document.getElementById('password').value;
+
+            if (!usernameVal) {
+                document.getElementById('username').focus();
+                loginError.textContent = 'Please enter your username.';
+                loginError.style.display = 'block';
+                return;
+            }
+
+            if (!passwordVal) {
+                document.getElementById('password').focus();
+                loginError.textContent = 'Please enter your password first.';
+                loginError.style.display = 'block';
+                return;
+            }
+
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Verifying...';
+            submitBtn.disabled = true;
+            loginError.style.display = 'none';
+
+            const formData = {
+                username: usernameVal,
+                password: passwordVal
+            };
+
+            try {
+                const response = await fetch('../api/admin_login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = 'adminoverview.html';
+                } else {
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    loginError.textContent = 'Incorrect username or password. Please try again.';
+                    loginError.style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                loginError.textContent = 'Connection error. Please try again.';
+                loginError.style.display = 'block';
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // =============================================
+        // Enter key handling — no native form submission involved
+        // =============================================
+
+        // Username: Enter → go to password field
+        document.getElementById('username').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('password').focus();
+            }
+        });
+
+        // Password: Enter → trigger login
+        document.getElementById('password').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleLogin();
+            }
+        });
+
+        // Button click → trigger login
+        document.getElementById('loginSubmitBtn').addEventListener('click', handleLogin);
+
+        // =============================================
+        // Prevent autofill by resetting form after load
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            setTimeout(function() {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }, 50);
+            setTimeout(function() {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }, 300);
+        });
+    </script>
+
+</body>
+</html>

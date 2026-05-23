@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | SourcePoint</title>
+    <link rel="stylesheet" href="../css/about.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo-group">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item active">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1>Our Mission</h1>
+            <p>Empowering Camarines Norte through centralized, collaborative information sharing.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="vision-grid">
+            <div class="vision-text">
+                <h2>Bridging the Information Gap</h2>
+                <p>Currently, residents in Camarines Norte rely on scattered sources like Facebook pages and barangay announcements. <strong>SourcePoint</strong> was born from the need to solve this inefficiency.</p>
+                <p>Aligned with <strong>SDG 11</strong>, our platform fosters stronger partnerships between local organizations, schools, and government agencies, creating a more connected and participatory community.</p>
+            </div>
+            <div class="vision-image">
+                <div class="sdg-badge">SDG 11 Focus</div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h2 class="section-title">The Project Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="member-role">Lead Architect</div>
+                    <h3>Gian Aaron Aguilar</h3>
+                    <p>Responsible for API connectivity and system logic.</p>
+                </div>
+                <div class="team-card">
+                    <div class="member-role">Backend Developer</div>
+                    <h3>Carl Jay Hermida</h3>
+                    <p>Responsible for Database and Server-side scripting.</p>
+                </div>
+                <div class="team-card">
+                    <div class="member-role">Frontend Developer</div>
+                    <h3>Dhanna Paula Casungcad</h3>
+                    <p>Responsible for UI/UX and client-side validation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-info">
+            <h2>How it Works</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h4>Data Aggregation</h4>
+                    <p>Our PHP middleware parses incoming JSON data from various councils and organizations.</p>
+                </div>
+                <div class="tech-item">
+                    <h4>Standardization</h4>
+                    <p>Data from disparate sources is processed and standardized into a unified internal database.</p>
+                </div>
+                <div class="tech-item">
+                    <h4>SMS Delivery</h4>
+                    <p>Integrated with UniSMS API to send real-time alerts directly to your mobile device.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    try {
+                        await fetch('../api/logout.php', { method: 'POST' });
+                        window.location.reload();
+                    } catch (error) {
+                        window.location.reload();
+                    }
+                });
+            }
+            checkLoginStatus();
+            loadFooterCategories();
+        });
+    </script>
+</body>
+</html>

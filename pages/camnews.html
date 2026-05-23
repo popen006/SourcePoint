@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | CamNorte News</title>
+    <link rel="stylesheet" href="../css/camnews.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="fb-root"></div>
+    <script>
+        // Facebook SDK initialization handler — parse embeds as soon as SDK is ready
+        window.fbAsyncInit = function() {
+            FB.init({
+                xfbml: true,
+                version: 'v19.0'
+            });
+            // FB.XFBML.parse() is called automatically by FB.init with xfbml:true
+        };
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0"></script>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="homepage.html" class="logo-group" style="text-decoration: none;">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item active">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="news-hero">
+        <div class="news-hero-content">
+            <h1><span class="highlight">Camarines Norte</span> News</h1>
+            <p>Real-time feeds from official Facebook pages across the province.</p>
+        </div>
+    </header>
+
+    <!-- Description -->
+    <section class="news-description">
+        <div class="container">
+            <p>
+                Stay informed with the latest news and updates from Camarines Norte. Below you'll find live Facebook timeline feeds from 
+                all 18 official provincial pages — government offices, agencies, officials, and more. 
+                <a href="homepage.html">Browse events</a> to see upcoming activities in the province.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter strip -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-strip" id="filter-strip">
+                <span class="filter-pill active" data-filter="all">All Pages</span>
+            </div>
+            <span class="filter-count" id="filter-count">18 pages</span>
+        </div>
+    </section>
+
+    <!-- News Feed Grid (dynamically generated) -->
+    <section class="news-page-section">
+        <div class="news-feed-grid" id="news-feed-grid">
+            <!-- Rendered by JS below -->
+        </div>
+    </section>
+
+    <!-- Additional Info Sources -->
+    <section class="news-sources">
+        <div class="sources-container">
+            <div class="section-header">
+                <h2>📡 More Ways to Stay Updated</h2>
+                <p>Follow these official sources for the latest on Camarines Norte</p>
+            </div>
+            <div class="sources-grid">
+                <div class="source-card">
+                    <div class="source-icon">🏛️</div>
+                    <h3>Provincial Government</h3>
+                    <p>Official announcements from the Capitol of Camarines Norte.</p>
+                </div>
+                <div class="source-card">
+                    <div class="source-icon">📅</div>
+                    <h3>Community Events</h3>
+                    <p>Browse collaborative events across different organizations in the province.</p>
+                </div>
+                <div class="source-card">
+                    <div class="source-icon">📱</div>
+                    <h3>SMS Notifications</h3>
+                    <p>Sign up to receive real-time SMS alerts about upcoming events.</p>
+                </div>
+                <div class="source-card">
+                    <div class="source-icon">🌐</div>
+                    <h3>Partner Organizations</h3>
+                    <p>Explore events by partner organizations active in Camarines Norte.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        // =============================================
+        // Facebook Pages Data (All 18)
+        // =============================================
+        const fbPages = [
+            { name: 'Camarines Norte News', url: 'https://www.facebook.com/camnortenews', imgId: 'camnortenews', category: 'media' },
+            { name: 'Community Affairs Office', url: 'https://www.facebook.com/cao.camnorte', imgId: 'cao.camnorte', category: 'government' },
+            { name: 'CANORECO', url: 'https://www.facebook.com/canorecobalitaofficial', imgId: 'canorecobalitaofficial', category: 'utility' },
+            { name: 'The Future University of Camarines Norte', url: 'https://www.facebook.com/cnscfutureuni', imgId: 'cnscfutureuni', category: 'education' },
+            { name: 'Dong Padilla', url: 'https://www.facebook.com/dongpadilla001', imgId: 'dongpadilla001', category: 'official' },
+            { name: 'Camarines Norte Barangay Affairs Office', url: 'https://www.facebook.com/profile.php?id=61570734971805', imgId: '61570734971805', category: 'government' },
+            { name: 'Provincial Youth Development Office - Camarines Norte', url: 'https://www.facebook.com/pydocamnorte', imgId: 'pydocamnorte', category: 'government' },
+            { name: 'Camarines Norte Provincial Library', url: 'https://www.facebook.com/camnorteprovlibrary', imgId: 'camnorteprovlibrary', category: 'government' },
+            { name: 'Camarines Norte Provincial Information Office', url: 'https://www.facebook.com/piocamnorte', imgId: 'piocamnorte', category: 'government' },
+            { name: 'Camarines Norte Provincial Hospital', url: 'https://www.facebook.com/CNProvincialHospital', imgId: 'CNProvincialHospital', category: 'government' },
+            { name: "Governor's Office Anti-Corruption Team", url: 'https://www.facebook.com/profile.php?id=61564716686592', imgId: '61564716686592', category: 'government' },
+            { name: "I Text Mo Si Dong - Camarines Norte Citizen's Complaint Hotline", url: 'https://www.facebook.com/iTextMosiDongOfficial', imgId: 'iTextMosiDongOfficial', category: 'government' },
+            { name: 'Provincial Agricultural and Fishery Council - CAMARINES NORTE', url: 'https://www.facebook.com/profile.php?id=61572925644090', imgId: '61572925644090', category: 'government' },
+            { name: 'Provincial Social Welfare and Development Office - Camarines Norte', url: 'https://www.facebook.com/pswdocamnorte', imgId: 'pswdocamnorte', category: 'government' },
+            { name: 'Provincial Planning and Development Office - Camarines Norte', url: 'https://www.facebook.com/PPDOCamNorte', imgId: 'PPDOCamNorte', category: 'government' },
+            { name: 'Provincial Disaster Risk Reduction and Management Office - Camarines Norte', url: 'https://www.facebook.com/pdrrmocamnorte', imgId: 'pdrrmocamnorte', category: 'government' },
+            { name: 'Daet Municipal Tourism Office', url: 'https://www.facebook.com/daettourism2019', imgId: 'daettourism2019', category: 'government' },
+            { name: 'Camarines Norte PDAO', url: 'https://www.facebook.com/camarinesnorte.pdao', imgId: 'camarinesnorte.pdao', category: 'government' }
+        ];
+
+        // Extract handle from URL
+        function getHandle(url) {
+            const match = url.match(/facebook\.com\/([^/?]+)/);
+            if (!match) return '';
+            if (match[1] === 'profile.php') {
+                const idMatch = url.match(/id=([^&]+)/);
+                return idMatch ? idMatch[1] : '';
+            }
+            return match[1];
+        }
+
+        // Build category filter pills
+        const categories = [
+            { key: 'all', label: 'All Pages' },
+            { key: 'government', label: 'Government' },
+            { key: 'official', label: 'Officials' },
+            { key: 'media', label: 'Media' },
+            { key: 'education', label: 'Education' },
+            { key: 'utility', label: 'Utility' }
+        ];
+
+        let activeFilter = 'all';
+
+        function renderFilterStrip() {
+            const strip = document.getElementById('filter-strip');
+            strip.innerHTML = '';
+            categories.forEach(cat => {
+                const pill = document.createElement('span');
+                pill.className = 'filter-pill' + (cat.key === activeFilter ? ' active' : '');
+                pill.dataset.filter = cat.key;
+                pill.textContent = cat.label;
+                strip.appendChild(pill);
+            });
+
+            strip.addEventListener('click', function(e) {
+                const pill = e.target.closest('.filter-pill');
+                if (!pill || pill.classList.contains('active')) return;
+                activeFilter = pill.dataset.filter;
+                renderFilterStrip();
+                renderNewsFeeds();
+            });
+        }
+
+        // =============================================
+        // Re-parse Facebook embeds after render
+        // =============================================
+        function parseFacebookEmbeds() {
+            if (typeof FB !== 'undefined' && FB.XFBML) {
+                FB.XFBML.parse();
+            }
+        }
+
+        // =============================================
+        // Render News Feeds
+        // All profiles use the fb-page embed — even personal profiles of public officials
+        // Facebook's Page plugin renders public figure profiles as well
+        // =============================================
+        function renderNewsFeeds() {
+            const grid = document.getElementById('news-feed-grid');
+            const filtered = activeFilter === 'all'
+                ? fbPages
+                : fbPages.filter(p => p.category === activeFilter);
+
+            document.getElementById('filter-count').textContent = filtered.length + ' page(s)';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p class="no-news">No pages found in this category.</p>';
+                return;
+            }
+
+            grid.innerHTML = '';
+
+            filtered.forEach(page => {
+                const handle = getHandle(page.url);
+                const imgSrc = `https://graph.facebook.com/${page.imgId}/picture?type=large`;
+
+                const col = document.createElement('div');
+                col.className = 'news-feed-column';
+
+                col.innerHTML = `
+                    <a href="${page.url}" target="_blank" rel="noopener" class="news-card-header">
+                        <div class="news-card-avatar">
+                            <img src="${imgSrc}"
+                                 alt="${page.name}"
+                                 loading="lazy"
+                                 onerror="this.parentElement.innerHTML = '<span class=\\'fb-dir-fallback\\'>${page.name.charAt(0)}</span>'">
+                        </div>
+                        <div class="news-card-info">
+                            <span class="feed-name">${page.name}</span>
+                            <span class="feed-meta">@${handle}</span>
+                        </div>
+                        <span class="news-card-external">↗</span>
+                    </a>
+                    <div class="news-feed-embed">
+                        <div class="fb-page"
+                             data-href="${page.url}"
+                             data-tabs="timeline"
+                             data-width="500"
+                             data-height="600"
+                             data-small-header="true"
+                             data-adapt-container-width="true"
+                             data-hide-cover="false"
+                             data-show-facepile="true">
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(col);
+            });
+
+            // Wait a tick for DOM update, then parse Facebook embeds
+            setTimeout(parseFacebookEmbeds, 200);
+            // Retry after 2 seconds in case FB SDK wasn't ready yet
+            setTimeout(parseFacebookEmbeds, 2000);
+            // Retry after 5 seconds for slower loads
+            setTimeout(parseFacebookEmbeds, 5000);
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Initialize on Page Load
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            renderFilterStrip();
+            renderNewsFeeds();
+            loadFooterCategories();
+        });
+    </script>
+</body>
+</html>

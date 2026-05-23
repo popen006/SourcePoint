@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/adminoverview.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/integ logo.png" alt="Logo" class="side-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">Admin Panel</span>
+                </div>
+            </div>
+
+            <nav class="side-nav">
+                <a href="adminoverview.html" class="nav-link active"><i>🏠</i> <span>Overview</span></a>
+                <a href="adminevents.html" class="nav-link"><i>📅</i> <span>Manage Events</span></a>
+                <a href="admincreate.html" class="nav-link"><i>➕</i> <span>Create Event</span></a>
+                <a href="adminusers.html" class="nav-link"><i>👥</i> <span>User Management</span></a>
+                <a href="admincontacts.html" class="nav-link"><i>📨</i> <span>Inquiries</span></a>
+                <a href="adminsms.html" class="nav-link"><i>💬</i> <span>SMS Notifications</span></a>
+                <a href="submissions.html" class="nav-link"><i>📩</i> <span>Submissions</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" id="logoutBtn" class="nav-link logout"><i>⬅</i> Sign Out</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Dashboard Overview</h1>
+                <p>Welcome to SourcePoint Admin Dashboard</p>
+            </header>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="total-events">0</span>
+                        <span class="stat-label">Total Events</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="total-partners">0</span>
+                        <span class="stat-label">Partner Organizations</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="total-users">0</span>
+                        <span class="stat-label">Registered Users</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔔</div>
+                    <div class="stat-details">
+                        <span class="stat-value" id="total-sms">0</span>
+                        <span class="stat-label">SMS Notifications</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="dashboard-flex">
+                <section class="recent-events">
+                    <div class="section-title">Recent Events</div>
+                    <div id="events-container">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">No recent events found.</p>
+                    </div>
+                </section>
+
+                <aside class="top-partners">
+                    <div class="section-title">Top Partners</div>
+                    <ul class="partner-list" id="partners-container">
+                        <li style="color: var(--text-muted); font-size: 0.8rem; border: none; background: transparent;">
+                            Awaiting data...
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // =============================================
+        // Load Dashboard Stats
+        // =============================================
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('../api/stats.php');
+                const result = await response.json();
+
+                if (result.success) {
+                    const s = result.stats;
+                    document.getElementById('total-events').textContent = s.total_events;
+                    document.getElementById('total-partners').textContent = s.total_organizations;
+                    document.getElementById('total-users').textContent = s.total_users;
+                    document.getElementById('total-sms').textContent = s.total_sms;
+
+                    // Load recent events
+                    const eventsContainer = document.getElementById('events-container');
+                    if (s.recent_events && s.recent_events.length > 0) {
+                        eventsContainer.innerHTML = '';
+                        s.recent_events.forEach(event => {
+                            const div = document.createElement('div');
+                            div.className = 'event-item';
+                            div.innerHTML = `
+                                <div class="event-info">
+                                    <strong>${event.title}</strong>
+                                    <span>${event.event_date} · ${event.category_name || 'General'}</span>
+                                </div>
+                                <span class="event-status ${event.status}">${event.status}</span>
+                            `;
+                            eventsContainer.appendChild(div);
+                        });
+                    }
+
+                    // Load partners
+                    const partnersContainer = document.getElementById('partners-container');
+                    if (s.events_by_category && s.events_by_category.length > 0) {
+                        partnersContainer.innerHTML = '';
+                        s.events_by_category.forEach(cat => {
+                            const li = document.createElement('li');
+                            li.textContent = `${cat.name}: ${cat.count} event(s)`;
+                            partnersContainer.appendChild(li);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard stats:', error);
+            }
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.href = 'homepage.html';
+            } catch (error) {
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        // =============================================
+        // Initialize
+        // =============================================
+        document.addEventListener('DOMContentLoaded', loadDashboardStats);
+    </script>
+</body>
+</html>

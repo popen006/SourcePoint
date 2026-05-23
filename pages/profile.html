@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | My Profile</title>
+    <link rel="stylesheet" href="../css/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .events-section { margin-top: 2rem; }
+        .events-section h2 { font-size: 1.2rem; color: #1a1a2e; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #e94560; display: inline-block; }
+        .my-event-card { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 0.8rem; border-left: 4px solid #e94560; }
+        .my-event-card .event-info { flex: 1; }
+        .my-event-card .event-info h4 { margin: 0 0 0.3rem; font-size: 1rem; color: #1a1a2e; }
+        .my-event-card .event-info p { margin: 0; font-size: 0.85rem; color: #666; }
+        .my-event-card .event-info span { font-size: 0.8rem; color: #888; }
+        .my-event-card .cancel-btn { padding: 0.4rem 0.8rem; background: #e74c3c; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .my-event-card .cancel-btn:hover { background: #c0392b; }
+        .no-events-msg { color: #888; font-size: 0.9rem; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="homepage.html" class="logo-group" style="text-decoration: none;">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span style="color: var(--text-muted); font-weight: 500;" id="userGreeting"></span>
+                <a href="#" id="logoutNav" class="nav-btn-signup">Log Out</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-wrapper">
+        <div class="profile-card">
+            <div class="card-header">
+                <a href="homepage.html" class="back-arrow" title="Back to Homepage">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </a>
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <h1>My Profile</h1>
+                <p>Manage your personal information</p>
+            </div>
+
+            <div id="profileMsg" class="form-msg"></div>
+
+            <form class="profile-form" id="profileForm">
+                <div class="input-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username">
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" placeholder="09XX XXX XXXX" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="org">Organization / Institution</label>
+                    <input type="text" id="org" placeholder="e.g., CamNorte State College">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">New Password <span style="font-weight:400;text-transform:none;color:var(--text-muted);">(leave blank to keep current)</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="At least 6 characters" minlength="6">
+                        <span class="toggle-pw" onclick="togglePassword('password', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="saveBtn">
+                    Save Changes
+                </button>
+            </form>
+
+            <!-- Registered Events Section -->
+            <div class="events-section">
+                <h2>📋 My Registered Events</h2>
+                <div id="myEventsContainer">
+                    <p class="no-events-msg">Loading your registered events...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        const profileForm = document.getElementById('profileForm');
+        const msgBox = document.getElementById('profileMsg');
+        const saveBtn = document.getElementById('saveBtn');
+
+        // =============================================
+        // Load Profile Data
+        // =============================================
+        async function loadProfile() {
+            try {
+                const response = await fetch('../api/profile.php');
+                const result = await response.json();
+
+                if (result.success) {
+                    const u = result.user;
+                    document.getElementById('fullname').value = u.fullname || '';
+                    document.getElementById('username').value = u.username || '';
+                    document.getElementById('email').value = u.email || '';
+                    document.getElementById('mobile').value = u.mobile || '';
+                    document.getElementById('org').value = u.organization || '';
+                } else {
+                    showMsg('Please log in first.', 'error');
+                    setTimeout(() => { window.location.href = 'residentlogin.html'; }, 1500);
+                }
+            } catch (error) {
+                showMsg('Failed to load profile.', 'error');
+            }
+        }
+
+        // =============================================
+        // Load Registered Events
+        // =============================================
+        async function loadMyEvents() {
+            const container = document.getElementById('myEventsContainer');
+            try {
+                const response = await fetch('../api/event_registrations.php?type=my');
+                const result = await response.json();
+
+                if (result.success && result.registrations.length > 0) {
+                    container.innerHTML = '';
+                    result.registrations.forEach(reg => {
+                        const eventDate = new Date(reg.event_date);
+                        const formattedDate = eventDate.toLocaleDateString('en-PH', {
+                            month: 'long', day: 'numeric', year: 'numeric'
+                        });
+
+                        const statusColor = reg.status === 'upcoming' ? '#3498db' : 
+                                            reg.status === 'ongoing' ? '#f39c12' : 
+                                            reg.status === 'completed' ? '#27AE60' : '#e74c3c';
+
+                        const div = document.createElement('div');
+                        div.className = 'my-event-card';
+                        div.style.borderLeftColor = statusColor;
+                        div.innerHTML = `
+                            <div class="event-info">
+                                <h4><a href="event_detail.html?id=${reg.event_id}" style="text-decoration:none; color:inherit;">${reg.title}</a></h4>
+                                <p>${reg.location}</p>
+                                <span>📅 ${formattedDate} · 🏛️ ${reg.organizer} · <span style="color:${statusColor};">${reg.status}</span></span>
+                            </div>
+                            <button class="cancel-btn" onclick="cancelRegistration(${reg.event_id})">Cancel</button>
+                        `;
+                        container.appendChild(div);
+                    });
+                } else if (result.success) {
+                    container.innerHTML = '<p class="no-events-msg">You haven\'t registered for any events yet. <a href="homepage.html">Browse events</a></p>';
+                } else {
+                    container.innerHTML = '<p class="no-events-msg">Please log in to see your registered events.</p>';
+                }
+            } catch (error) {
+                container.innerHTML = '<p class="no-events-msg">Unable to load your events.</p>';
+            }
+        }
+
+        // =============================================
+        // Cancel Registration
+        // =============================================
+        async function cancelRegistration(eventId) {
+            if (!confirm('Cancel your registration for this event?')) return;
+            try {
+                const res = await fetch('../api/event_registrations.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event_id: eventId })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadMyEvents();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (e) {
+                alert('Connection error');
+            }
+        }
+
+        // =============================================
+        // Save Profile (with confirmation)
+        // =============================================
+        profileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Track changed fields
+            const newUsername = document.getElementById('username').value;
+            const changedFields = [];
+
+            // Load current data to compare
+            try {
+                const checkRes = await fetch('../api/profile.php');
+                const checkData = await checkRes.json();
+                if (checkData.success) {
+                    const current = checkData.user;
+                    if (newUsername !== (current.username || '')) changedFields.push('username');
+                    if (document.getElementById('fullname').value !== (current.fullname || '')) changedFields.push('full name');
+                    if (document.getElementById('email').value !== (current.email || '')) changedFields.push('email');
+                    if (document.getElementById('mobile').value !== (current.mobile || '')) changedFields.push('mobile number');
+                    if (document.getElementById('org').value !== (current.organization || '')) changedFields.push('organization');
+                    if (document.getElementById('password').value) changedFields.push('password');
+                }
+            } catch (e) {
+                // Proceed even if we can't fetch current data
+            }
+
+            if (changedFields.length > 0) {
+                const fieldList = changedFields.join(', ');
+                if (!confirm(`You are about to change your ${fieldList}. Are you sure?`)) {
+                    return;
+                }
+            } else {
+                showMsg('No changes detected.', 'error');
+                return;
+            }
+
+            saveBtn.textContent = 'Saving...';
+            saveBtn.disabled = true;
+            msgBox.className = 'form-msg';
+
+            const formData = {
+                fullname: document.getElementById('fullname').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                mobile: document.getElementById('mobile').value,
+                organization: document.getElementById('org').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch('../api/profile.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showMsg('✅ Profile updated successfully!', 'success');
+                    document.getElementById('password').value = '';
+                } else {
+                    showMsg('❌ ' + result.message, 'error');
+                }
+            } catch (error) {
+                showMsg('❌ Connection error. Please try again.', 'error');
+            } finally {
+                saveBtn.textContent = 'Save Changes';
+                saveBtn.disabled = false;
+            }
+        });
+
+        // =============================================
+        // Helper: Show Message
+        // =============================================
+        function showMsg(text, type) {
+            msgBox.textContent = text;
+            msgBox.className = 'form-msg ' + type;
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutNav').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.href = 'homepage.html';
+            } catch (error) {
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Load User Greeting
+        // =============================================
+        async function loadUserGreeting() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                if (result.logged_in) {
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || 'User');
+                }
+            } catch (error) {}
+        }
+
+
+        // =============================================
+        // Initialize
+        // =============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserGreeting();
+            loadProfile();
+            loadMyEvents();
+        });
+    </script>
+
+    <style>
+        .password-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+        .password-wrapper input[type="password"], .password-wrapper input[type="text"] { width: 100% !important; padding-right: 40px !important; box-sizing: border-box; }
+        .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; display: flex; align-items: center; padding: 4px; border-radius: 4px; transition: color 0.2s; z-index: 2; background: transparent; }
+        .toggle-pw:hover { color: #333; }
+    </style>
+    <script>
+        function togglePassword(inputId, toggleEl) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            toggleEl.innerHTML = isPassword
+                ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+    </script>
+
+</body>
+</html>

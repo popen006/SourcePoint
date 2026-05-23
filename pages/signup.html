@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Create Account</title>
+    <link rel="stylesheet" href="../css/signup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo-group">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="adminlogin.html" id="signupLink" class="nav-btn-signup">Admin Portal</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="signup-wrapper">
+        <div class="signup-card">
+            <div class="card-header">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="19" y1="8" x2="19" y2="14"/>
+                        <line x1="22" y1="11" x2="16" y2="11"/>
+                    </svg>
+                </div>
+                <h1>Create Account</h1>
+                <p>Start your journey with SourcePoint</p>
+            </div>
+
+            <form class="signup-form" id="registrationForm">
+                <div class="input-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" placeholder="Juan Dela Cruz" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="juandelacruz" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="juan@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" placeholder="09XX XXX XXXX" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="org">Organization / Institution</label>
+                    <input type="text" id="org" placeholder="e.g., CamNorte State College">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="At least 6 characters" required minlength="6">
+                        <span class="toggle-pw" onclick="togglePassword('password', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" placeholder="Re-enter your password" required minlength="6">
+                        <span class="toggle-pw" onclick="togglePassword('confirmPassword', this)">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="login-prompt">
+                Already registered? <a href="residentlogin.html">Log In</a>
+            </p>
+        </div>
+    </main>
+
+    <div id="successModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="success-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h2>Registration Successful!</h2>
+            <p>Thank you for subscribing to <strong>SourcePoint</strong>. Your account has been created successfully.</p>
+            
+            <div class="sms-notice-box">
+                <span class="sms-icon">📱</span>
+                <p>You are now subscribed to our community alert system. You'll be receiving real-time SMS updates regarding programs across Camarines Norte starting today.</p>
+            </div>
+
+            <button id="closeModalBtn" class="btn-primary">Proceed to Homepage</button>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        const registrationForm = document.getElementById('registrationForm');
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        registrationForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('.btn-primary');
+            submitBtn.textContent = 'Creating Account...';
+            submitBtn.disabled = true;
+
+            // Validate passwords match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                submitBtn.textContent = 'Create Account';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const formData = {
+                fullname: document.getElementById('fullname').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                mobile: document.getElementById('mobile').value,
+                organization: document.getElementById('org').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('../api/register.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successModal.classList.add('show');
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Connection error. Please try again.');
+                console.error('Registration error:', error);
+            } finally {
+                submitBtn.textContent = 'Create Account';
+                submitBtn.disabled = false;
+            }
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            window.location.href = 'homepage.html';
+        });
+
+        // Initialize login check
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+
+    <style>
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .password-wrapper input { width: 100%; padding-right: 40px !important; }
+        .toggle-pw { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; display: flex; align-items: center; padding: 4px; border-radius: 4px; transition: color 0.2s; }
+        .toggle-pw:hover { color: #333; }
+    </style>
+    <script>
+        function togglePassword(inputId, toggleEl) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            toggleEl.innerHTML = isPassword
+                ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+    </script>
+
+</body>
+</html>

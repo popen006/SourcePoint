@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Terms of Service</title>
+    <link rel="stylesheet" href="../css/homepage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .legal-content { max-width: 800px; margin: 3rem auto; padding: 0 1.5rem; }
+        .legal-content h1 { font-size: 2rem; margin-bottom: 0.5rem; color: #1a1a2e; }
+        .legal-content .updated { color: #888; font-size: 0.9rem; margin-bottom: 2rem; }
+        .legal-content h2 { font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.8rem; color: #1a1a2e; }
+        .legal-content p { line-height: 1.7; color: #555; margin-bottom: 1rem; }
+        .legal-content ul { margin-bottom: 1rem; padding-left: 1.5rem; }
+        .legal-content li { line-height: 1.7; color: #555; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="homepage.html" class="logo-group" style="text-decoration: none;">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="legal-content">
+        <h1>Terms of Service</h1>
+        <p class="updated">Last updated: May 2026</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By creating an account and using SourcePoint, you agree to these Terms of Service. If you do not agree, please do not use our service.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>SourcePoint is a community event aggregator that connects residents of Camarines Norte with local programs, outreach activities, and collaborative events. The platform allows users to:</p>
+        <ul>
+            <li>View and filter upcoming community events</li>
+            <li>Register for events they wish to attend</li>
+            <li>Receive SMS notifications about events</li>
+            <li>Submit event proposals for review</li>
+            <li>Manage their profile and registrations</li>
+        </ul>
+
+        <h2>3. User Responsibilities</h2>
+        <p>As a user, you agree to:</p>
+        <ul>
+            <li>Provide accurate and truthful registration information</li>
+            <li>Keep your account credentials secure</li>
+            <li>Not misuse the platform for spam or unauthorized commercial purposes</li>
+            <li>Comply with all applicable laws and regulations</li>
+        </ul>
+
+        <h2>4. SMS Notifications</h2>
+        <p>By registering, you consent to receive SMS notifications. Standard message and data rates may apply. You can opt out at any time by contacting the administrator.</p>
+
+        <h2>5. Event Submissions</h2>
+        <p>Submitted event proposals are subject to review and approval by administrators. We reserve the right to approve, reject, or modify submissions at our discretion.</p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>SourcePoint serves as an information platform and is not responsible for the actual organization or execution of listed events. Event organizers are solely responsible for their events.</p>
+
+        <h2>7. Changes to Terms</h2>
+        <p>We reserve the right to modify these terms at any time. Users will be notified of significant changes via email or platform notice.</p>
+
+        <h2>8. Contact</h2>
+        <p>For questions about these terms, please <a href="contact.html">contact us</a>.</p>
+    </div>
+
+    <script>
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadFooterCategories();
+        });
+    </script>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

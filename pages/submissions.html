@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Submissions</title>
+    <link rel="stylesheet" href="../css/submissions.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/integ logo.png" alt="Logo" class="side-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">Admin Panel</span>
+                </div>
+            </div>
+
+             <nav class="side-nav">
+                <a href="adminoverview.html" class="nav-link"><i>🏠</i> <span>Overview</span></a>
+                <a href="adminevents.html" class="nav-link"><i>📅</i> <span>Manage Events</span></a>
+                <a href="admincreate.html" class="nav-link"><i>➕</i> <span>Create Event</span></a>
+                <a href="adminusers.html" class="nav-link"><i>👥</i> <span>User Management</span></a>
+                <a href="admincontacts.html" class="nav-link"><i>📨</i> <span>Inquiries</span></a>
+                <a href="adminsms.html" class="nav-link"><i>💬</i> <span>SMS Notifications</span></a>
+                <a href="submissions.html" class="nav-link active"><i>📩</i> <span>Submissions</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="homepage.html" class="nav-link logout" id="logoutBtn"><i>⬅</i> <span>Sign Out</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Incoming Submissions</h1>
+                <p>Review and approve event applications and partner requests.</p>
+            </header>
+
+            <div class="mini-stats">
+                <div class="m-stat">
+                    <span class="m-label">Pending Review</span>
+                    <span class="m-value" id="pending-count" style="color: #f39c12;">0</span>
+                </div>
+                <div class="m-stat">
+                    <span class="m-label">Total Submissions</span>
+                    <span class="m-value" id="total-count" style="color: #27AE60;">0</span>
+                </div>
+            </div>
+
+            <section class="toolbar-card">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Filter by partner or event name...">
+                </div>
+                <div class="filter-pills" id="filterPills">
+                    <button class="pill active" data-status="all">All</button>
+                    <button class="pill" data-status="pending">Pending</button>
+                    <button class="pill" data-status="approved">Approved</button>
+                    <button class="pill" data-status="rejected">Rejected</button>
+                </div>
+            </section>
+
+            <div class="table-container">
+                <table class="submission-table">
+                    <thead>
+                        <tr>
+                            <th>Partner / Submitter</th>
+                            <th>Event Reference</th>
+                            <th>Date Submitted</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissions-body">
+                        <tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Loading submissions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Review Modal (Form-based layout like Create Event) -->
+    <div id="reviewModal" class="modal-overlay" style="display:none;">
+        <div class="review-modal-container">
+            <div class="review-modal-header">
+                <h2><i class="fa-solid fa-file-pen"></i> Review Submission</h2>
+                <button class="modal-close-btn" onclick="closeReviewModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="review-modal-body">
+
+                <!-- Cover Photo Section -->
+                <div class="review-card upload-section">
+                    <div class="section-title"><i class="fa-solid fa-image"></i> Event Cover Photo</div>
+                    <div id="reviewCoverBox" class="image-preview-box">
+                        <img id="reviewCoverImg" src="" alt="Cover Photo" style="display:none; max-width:100%; max-height:250px; border-radius:8px; object-fit:cover;">
+                        <div id="reviewCoverPlaceholder" class="no-image-placeholder">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>No cover photo uploaded</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Information Section -->
+                <div class="review-card">
+                    <div class="section-title"><i class="fa-solid fa-circle-info"></i> Basic Information</div>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Event Title</label>
+                            <input type="text" id="revEventTitle" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" id="revEventCategory" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="revEventLocation" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Event Date</label>
+                            <input type="text" id="revEventDate" readonly class="review-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organization / Contact Section -->
+                <div class="review-card">
+                    <div class="section-title"><i class="fa-solid fa-building"></i> Submitted By</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Organization</label>
+                            <input type="text" id="revOrgName" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Person</label>
+                            <input type="text" id="revContactPerson" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" id="revContactEmail" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile</label>
+                            <input type="text" id="revContactMobile" readonly class="review-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Content Section -->
+                <div class="review-card">
+                    <div class="section-title"><i class="fa-solid fa-align-left"></i> Event Content</div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="revEventDescription" readonly class="review-field review-textarea"></textarea>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Organizer</label>
+                            <input type="text" id="revOrganizer" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Partner Organizations</label>
+                            <input type="text" id="revPartners" readonly class="review-field">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Info Section -->
+                <div class="review-card">
+                    <div class="section-title"><i class="fa-solid fa-clock"></i> Submission Info</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Date Submitted</label>
+                            <input type="text" id="revSubmittedAt" readonly class="review-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <input type="text" id="revStatus" readonly class="review-field status-field">
+                        </div>
+                    </div>
+                    <div id="reviewAdminNotes" style="display:none; margin-top:12px;" class="form-group">
+                        <label>Admin Notes</label>
+                        <textarea id="revAdminNotes" readonly class="review-field review-textarea"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="review-modal-footer" id="reviewModalFooter">
+                <button class="btn-reject-action" onclick="rejectWithConfirm(getCurrentReviewId())">
+                    <i class="fa-solid fa-ban"></i> Reject
+                </button>
+                <button class="btn-approve-action" onclick="approveWithConfirm(getCurrentReviewId())">
+                    <i class="fa-solid fa-check-circle"></i> Approve
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay" style="display:none;">
+        <div class="confirm-modal-box">
+            <div class="confirm-icon" id="confirmIcon">
+                <i class="fa-solid fa-question-circle"></i>
+            </div>
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn-cancel-confirm" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn-proceed" id="confirmProceedBtn">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFilter = 'all';
+        let submissionsData = [];
+        let currentReviewId = null;
+
+        function getCurrentReviewId() {
+            return currentReviewId;
+        }
+
+        // ========== MODAL HELPERS ==========
+        function openReviewModal() {
+            document.getElementById('reviewModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function openConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        // ========== CONFIRMATION ==========
+        function showConfirm(title, message, icon, proceedCallback) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            const iconEl = document.getElementById('confirmIcon');
+            iconEl.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+            iconEl.className = 'confirm-icon ' + (icon.includes('check') ? 'icon-success' : icon.includes('ban') ? 'icon-danger' : 'icon-warning');
+            const proceedBtn = document.getElementById('confirmProceedBtn');
+            proceedBtn.onclick = function() {
+                closeConfirmModal();
+                proceedCallback();
+            };
+            openConfirmModal();
+        }
+
+        function approveWithConfirm(id) {
+            currentReviewId = id;
+            const sub = submissionsData.find(s => s.id === id);
+            const title = sub ? sub.event_title : 'this submission';
+            showConfirm(
+                'Approve Submission?',
+                `Are you sure you want to approve "${title}"? This will automatically create the event and notify the submitter.`,
+                'fa-check-circle',
+                function() { proceedApprove(id); }
+            );
+        }
+
+        function rejectWithConfirm(id) {
+            currentReviewId = id;
+            const sub = submissionsData.find(s => s.id === id);
+            const title = sub ? sub.event_title : 'this submission';
+            showConfirm(
+                'Reject Submission?',
+                `Are you sure you want to reject "${title}"? The submitter will be notified.`,
+                'fa-ban',
+                function() { proceedReject(id); }
+            );
+        }
+
+        // ========== LOAD SUBMISSIONS ==========
+        async function loadSubmissions(status = 'all') {
+            const tbody = document.getElementById('submissions-body');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Loading...</td></tr>';
+
+            try {
+                let url = '../api/submissions.php';
+                if (status !== 'all') url += '?status=' + status;
+
+                const response = await fetch(url);
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    const txt = await response.text();
+                    result = { success: false, message: txt || 'Invalid server response' };
+                }
+
+                if (result && result.success) {
+                    submissionsData = result.submissions;
+                    const submissions = result.submissions;
+                    let pendingCount = 0;
+                    tbody.innerHTML = '';
+
+                    if (submissions.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No submissions found.</td></tr>';
+                    } else {
+                        submissions.forEach(sub => {
+                            if (sub.status === 'pending') pendingCount++;
+
+                            const initials = sub.org_name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                            const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6'];
+                            const colorIdx = Math.floor(Math.random() * colors.length);
+
+                            const date = new Date(sub.submitted_at);
+                            const formattedDate = date.toLocaleDateString('en-PH', {
+                                month: 'long', day: 'numeric', year: 'numeric'
+                            });
+
+                            const statusClass = sub.status === 'pending' ? 'pending' :
+                                                sub.status === 'approved' ? 'approved' : 'rejected';
+
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>
+                                    <div class="user-info">
+                                        <div class="avatar" style="background: ${colors[colorIdx]};">${initials}</div>
+                                        <div>
+                                            <span class="u-name">${sub.org_name}</span>
+                                            <span class="u-mail">${sub.contact_email}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${sub.event_title}</td>
+                                <td>${formattedDate}</td>
+                                <td><span class="status-dot ${statusClass}"></span> ${sub.status}</td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="btn-view" title="Review Submission" onclick='openReviewModalFor(${JSON.stringify(sub).replace(/'/g, "&#39;")})'>
+                                            <i class="fa-solid fa-eye"></i> Review
+                                        </button>
+                                    ${sub.status === 'pending' ? `
+                                        <button class="btn-approve" title="Approve" onclick="approveWithConfirm(${sub.id})">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button class="btn-reject" title="Reject" onclick="rejectWithConfirm(${sub.id})">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                    ` : ''}
+                                    </div>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    }
+
+                    document.getElementById('pending-count').textContent = pendingCount;
+                    document.getElementById('total-count').textContent = submissions.length;
+                } else {
+                    const message = (result && result.message) ? result.message : 'Failed to load.';
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">${message}</td></tr>`;
+                }
+            } catch (error) {
+                document.getElementById('submissions-body').innerHTML =
+                    '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Connection error.</td></tr>';
+                console.error('loadSubmissions error:', error);
+            }
+        }
+
+        // ========== OPEN REVIEW MODAL WITH DATA ==========
+        function openReviewModalFor(sub) {
+            currentReviewId = sub.id;
+
+            // Cover photo
+            const coverImg = document.getElementById('reviewCoverImg');
+            const coverPlaceholder = document.getElementById('reviewCoverPlaceholder');
+            if (sub.cover_image) {
+                const url = sub.cover_image.startsWith('uploads/') ? ('../' + sub.cover_image) : sub.cover_image;
+                coverImg.src = url;
+                coverImg.style.display = 'block';
+                coverPlaceholder.style.display = 'none';
+            } else {
+                coverImg.style.display = 'none';
+                coverPlaceholder.style.display = 'flex';
+            }
+
+            // Basic Info
+            document.getElementById('revEventTitle').value = sub.event_title || '';
+            document.getElementById('revEventCategory').value = sub.event_category || 'N/A';
+            document.getElementById('revEventLocation').value = sub.event_location || 'N/A';
+
+            // Format date nicely
+            if (sub.event_date) {
+                const d = new Date(sub.event_date + 'T00:00:00');
+                document.getElementById('revEventDate').value = d.toLocaleDateString('en-PH', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+            } else {
+                document.getElementById('revEventDate').value = 'Not specified';
+            }
+
+            // Organization / Contact
+            document.getElementById('revOrgName').value = sub.org_name || '';
+            document.getElementById('revContactPerson').value = sub.contact_person || '';
+            document.getElementById('revContactEmail').value = sub.contact_email || '';
+            document.getElementById('revContactMobile').value = sub.contact_mobile || 'N/A';
+
+            // Event Content
+            document.getElementById('revEventDescription').value = sub.event_description || '';
+            document.getElementById('revOrganizer').value = sub.event_organizer || 'Not specified';
+            document.getElementById('revPartners').value = sub.partner_organizations || 'None';
+
+            // Submission Info
+            const date = new Date(sub.submitted_at);
+            document.getElementById('revSubmittedAt').value = date.toLocaleDateString('en-PH', {
+                month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            const statusField = document.getElementById('revStatus');
+            statusField.value = sub.status.toUpperCase();
+            statusField.className = 'review-field status-field';
+            if (sub.status === 'pending') statusField.classList.add('status-pending');
+            else if (sub.status === 'approved') statusField.classList.add('status-approved');
+            else if (sub.status === 'rejected') statusField.classList.add('status-rejected');
+
+            // Admin notes (if any)
+            const notesRow = document.getElementById('reviewAdminNotes');
+            if (sub.admin_notes) {
+                document.getElementById('revAdminNotes').value = sub.admin_notes;
+                notesRow.style.display = 'block';
+            } else {
+                notesRow.style.display = 'none';
+            }
+
+            // Show/hide approve/reject buttons based on status
+            const footer = document.getElementById('reviewModalFooter');
+            if (sub.status === 'pending') {
+                footer.style.display = 'flex';
+            } else {
+                footer.style.display = 'none';
+            }
+
+            openReviewModal();
+        }
+
+        // ========== APPROVE ==========
+        async function proceedApprove(id) {
+            try {
+                const res = await fetch('../api/submissions.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id, action: 'approved' })
+                });
+                const data = await res.json();
+                alert(data.message);
+                closeReviewModal();
+                if (data.success) loadSubmissions(currentFilter);
+            } catch (e) {
+                alert('Connection error');
+            }
+        }
+
+        // ========== REJECT ==========
+        async function proceedReject(id) {
+            const reason = prompt('Enter reason for rejection (optional):');
+            if (reason === null) return;
+            try {
+                const res = await fetch('../api/submissions.php', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id, action: 'rejected', admin_notes: reason || '' })
+                });
+                const data = await res.json();
+                alert(data.message);
+                closeReviewModal();
+                if (data.success) loadSubmissions(currentFilter);
+            } catch (e) {
+                alert('Connection error');
+            }
+        }
+
+        // ========== FILTER ==========
+        document.querySelectorAll('#filterPills .pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('#filterPills .pill').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.status;
+                loadSubmissions(currentFilter);
+            });
+        });
+
+        // ========== SEARCH ==========
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#submissions-body tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(q) ? '' : 'none';
+            });
+        });
+
+        // ========== CLOSE MODAL ON OVERLAY CLICK ==========
+        document.getElementById('reviewModal').addEventListener('click', function(e) {
+            if (e.target === this) closeReviewModal();
+        });
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConfirmModal();
+        });
+
+        // ========== LOGOUT ==========
+        document.getElementById('logoutBtn').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.href = 'homepage.html';
+            } catch (error) {
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        // ========== INIT ==========
+        async function initSubmissionsPage() {
+            try {
+                const res = await fetch('../api/check_session.php');
+                const result = await res.json();
+                if (!result.admin) {
+                    window.location.href = 'adminlogin.html';
+                    return;
+                }
+                await loadSubmissions('all');
+            } catch (e) {
+                window.location.href = 'adminlogin.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initSubmissionsPage);
+    </script>
+
+</body>
+</html>

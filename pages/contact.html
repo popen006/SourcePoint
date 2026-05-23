@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | SourcePoint</title>
+    <link rel="stylesheet" href="../css/contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo-group">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="camnews.html" class="nav-item">News</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item active">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Section 1: Get in Touch -->
+        <section class="contact-wrapper">
+            <div class="contact-info">
+                <span class="member-role">Get in Touch</span>
+                <h2>Connect with the <br>SourcePoint Team</h2>
+                <p>Have a question about a collaborative event? Or are you a partner organization looking to integrate your data feed?</p>
+                
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="icon">📍</div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>CNSC CCMS Building, Daet, Camarines Norte</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">📧</div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>supportsourcepoint@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">📱</div>
+                        <div>
+                            <h4>SMS Integration Support</h4>
+                            <p>+63 981 71 533</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-card">
+                <hr class="contact-divider" />
+
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" placeholder="e.g. Juan Dela Cruz" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="juan@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject">
+                            <option>General Inquiry</option>
+                            <option>Event Verification</option>
+                            <option>Partner Integration Request</option>
+                            <option>SMS Notification Issue</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <div id="contactMsg" style="display:none; margin-bottom:1rem; padding:0.75rem; border-radius:8px;"></div>
+                    <button type="submit" class="submit-btn">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section 2: Submit Event for Approval -->
+        <section class="contact-wrapper submission-section">
+            <div class="contact-info">
+                <span class="member-role">Submit Event</span>
+                <h2>Propose an Event for <br>Community Listing</h2>
+                <p>Are you an organization planning an event? Submit your event details and our team will review it for approval. Once approved, your event will be listed on our platform for the community to discover.</p>
+                
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="icon">⏱️</div>
+                        <div>
+                            <h4>Review Time</h4>
+                            <p>Usually within 2-3 business days</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">✅</div>
+                        <div>
+                            <h4>Approval Process</h4>
+                            <p>Our team verifies event details before publishing</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">📧</div>
+                        <div>
+                            <h4>Notification</h4>
+                            <p>You'll receive updates via email</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-card submission-form-card">
+                <form id="submissionForm" enctype="multipart/form-data">
+                    <!-- Event Cover Photo Section -->
+                    <div class="form-card upload-section">
+                        <div class="section-title">Event Cover Photo</div>
+                        <div class="image-upload-box" id="uploadBox" role="button" tabindex="0" aria-label="Upload event cover photo">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>Click to upload or drag and drop</p>
+                            <span>PNG, JPG or WEBP (Max 5MB)</span>
+                            <input type="file" id="event-image" name="cover_image" accept="image/png,image/jpeg,image/webp" style="display:none;">
+                        </div>
+                        <div id="imagePreview" style="display:none; margin-top: 10px;">
+                            <img id="previewImg" style="max-width: 200px; border-radius: 8px;">
+                            <button type="button" id="removeImage" style="display:block; margin-top:5px; background:none; border:none; color:#e74c3c; cursor:pointer;">Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- Basic Information Section -->
+                    <div class="form-card">
+                        <div class="section-title">Organization Details</div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Organization Name</label>
+                                <input type="text" id="orgName" placeholder="e.g., LGU Daet Health Office" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Contact Person</label>
+                                <input type="text" id="contactPerson" placeholder="e.g., Juan Dela Cruz" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" id="contactEmail" placeholder="contact@organization.com" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Mobile Number (Optional)</label>
+                                <input type="tel" id="contactMobile" placeholder="+63 9XX XXX XXXX">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Details Section -->
+                    <div class="form-card">
+                        <div class="section-title">Event Details</div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Event Title</label>
+                                <input type="text" id="eventTitle" placeholder="e.g., Annual Health Summit 2026" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select id="eventCategory">
+                                    <option value="Health">Health</option>
+                                    <option value="Training">Training</option>
+                                    <option value="Seminar">Seminar</option>
+                                    <option value="Outreach">Outreach</option>
+                                    <option value="Environment">Environment</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Livelihood">Livelihood</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" id="eventLocation" placeholder="City/Municipality, Camarines Norte" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Event Date</label>
+                                <input type="date" id="eventDate" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Event Description</label>
+                                <textarea rows="5" id="eventDescription" placeholder="Write a detailed description of the event..." required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Organizer</label>
+                                <input type="text" id="eventOrganizer" placeholder="e.g., LGU Daet" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Partner Organizations (Comma separated)</label>
+                                <input type="text" id="eventPartners" placeholder="Red Cross, LGU Daet">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="submissionMsg" style="display:none; margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px; font-size: 0.9rem;"></div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="clearSubmissionBtn">Clear Form</button>
+                        <button type="submit" class="btn-submit">Submit for Approval</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // =============================================
+        // Check Login Status & Update Nav
+        // =============================================
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // =============================================
+        // Logout
+        // =============================================
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            try {
+                await fetch('../api/logout.php', { method: 'POST' });
+                window.location.reload();
+            } catch (error) {
+                window.location.reload();
+            }
+        });
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('.submit-btn');
+            const msgBox = document.getElementById('contactMsg');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            msgBox.style.display = 'none';
+
+            const formData = {
+                name: document.getElementById('full-name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            try {
+                const response = await fetch('../api/contact.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    msgBox.style.cssText = 'display:block; background: #d4edda; color: #155724; padding: 0.75rem; border-radius: 8px;';
+                    msgBox.textContent = '✅ Message sent successfully!';
+                    this.reset();
+                } else {
+                    msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                    msgBox.textContent = '❌ ' + result.message;
+                }
+            } catch (error) {
+                msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                msgBox.textContent = '❌ Connection error.';
+            } finally {
+                submitBtn.textContent = 'Send Message';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Initialize login check on load
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+        // =============================================
+        // Submission Form - Image Upload
+        // =============================================
+        const uploadBox = document.getElementById('uploadBox');
+        const fileInput = document.getElementById('event-image');
+
+        if (uploadBox && fileInput) {
+            function openFilePicker() {
+                if (fileInput && typeof fileInput.click === 'function') {
+                    fileInput.click();
+                }
+            }
+
+            uploadBox.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openFilePicker();
+            });
+
+            uploadBox.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openFilePicker();
+                }
+            });
+
+            fileInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        document.getElementById('previewImg').src = ev.target.result;
+                        document.getElementById('imagePreview').style.display = 'block';
+                        document.getElementById('uploadBox').style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            document.getElementById('removeImage').addEventListener('click', function() {
+                document.getElementById('event-image').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
+                document.getElementById('uploadBox').style.display = 'block';
+            });
+        }
+
+        // =============================================
+        // Submission Form Submit
+        // =============================================
+        const submissionForm = document.getElementById('submissionForm');
+        if (submissionForm) {
+            submissionForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('.btn-submit');
+                const msgBox = document.getElementById('submissionMsg');
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
+                msgBox.style.display = 'none';
+
+                // Use FormData to include the cover image file upload
+                const formData = new FormData();
+                formData.append('org_name', document.getElementById('orgName').value);
+                formData.append('contact_person', document.getElementById('contactPerson').value);
+                formData.append('contact_email', document.getElementById('contactEmail').value);
+                formData.append('contact_mobile', document.getElementById('contactMobile').value);
+                formData.append('event_title', document.getElementById('eventTitle').value);
+                formData.append('event_description', document.getElementById('eventDescription').value);
+                formData.append('event_category', document.getElementById('eventCategory').value);
+                formData.append('event_location', document.getElementById('eventLocation').value);
+                formData.append('event_date', document.getElementById('eventDate').value);
+                formData.append('event_organizer', document.getElementById('eventOrganizer').value);
+                formData.append('partner_organizations', document.getElementById('eventPartners').value);
+
+                // Include the cover image file if one was selected
+                const coverFileInput = document.getElementById('event-image');
+                if (coverFileInput && coverFileInput.files && coverFileInput.files.length > 0) {
+                    formData.append('cover_image', coverFileInput.files[0]);
+                }
+
+                try {
+                    const response = await fetch('../api/submissions.php', {
+                        method: 'POST',
+                        body: formData
+                        // Note: Do NOT set Content-Type header; let the browser set it with the boundary for FormData
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        msgBox.style.cssText = 'display:block; background: #d4edda; color: #155724; padding: 0.75rem; border-radius: 8px;';
+                        msgBox.textContent = '✅ ' + result.message;
+                        this.reset();
+                        // Reset image upload
+                        if (document.getElementById('imagePreview')) {
+                            document.getElementById('imagePreview').style.display = 'none';
+                            document.getElementById('uploadBox').style.display = 'block';
+                        }
+                    } else {
+                        msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                        msgBox.textContent = '❌ ' + result.message;
+                    }
+                } catch (error) {
+                    msgBox.style.cssText = 'display:block; background: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 8px;';
+                    msgBox.textContent = '❌ Connection error. Please try again.';
+                } finally {
+                    submitBtn.textContent = 'Submit for Approval';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Clear Submission Form
+        const clearBtn = document.getElementById('clearSubmissionBtn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                if (confirm('Clear all form fields?')) {
+                    submissionForm.reset();
+                    document.getElementById('imagePreview').style.display = 'none';
+                    document.getElementById('uploadBox').style.display = 'block';
+                    document.getElementById('submissionMsg').style.display = 'none';
+                }
+            });
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        // =============================================
+        // Set min date for event datepicker (prevent past dates)
+        // =============================================
+        function setMinEventDate() {
+            const eventDateInput = document.getElementById('eventDate');
+            if (eventDateInput) {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                eventDateInput.setAttribute('min', `${year}-${month}-${day}`);
+            }
+        }
+
+        // =============================================
+        // Protect Submission Form (logged-in only)
+        // =============================================
+        function protectSubmissionForm() {
+            const submissionSection = document.querySelector('.submission-section');
+            const submissionFormCard = document.querySelector('.submission-form-card');
+
+            if (!submissionSection || !submissionFormCard) return;
+
+            fetch('../api/check_session.php')
+                .then(res => res.json())
+                .then(result => {
+                    if (!result.logged_in) {
+                        // Replace the form with a login prompt
+                        submissionFormCard.innerHTML = `
+                            <div style="text-align:center; padding:3rem 2rem;">
+                                <div style="font-size:3rem; margin-bottom:1rem;">🔒</div>
+                                <h3 style="margin-bottom:0.5rem;">Login Required</h3>
+                                <p style="color:var(--text-muted); margin-bottom:1.5rem;">You need to be logged in to submit an event proposal.</p>
+                                <a href="residentlogin.html" class="btn-submit" style="display:inline-block; text-decoration:none;">Log In</a>
+                                <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-muted);">
+                                    Don't have an account? <a href="signup.html">Sign up here</a>
+                                </p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(() => {
+                    // If check fails, hide the form to be safe
+                    submissionSection.style.display = 'none';
+                });
+        }
+
+        // Initialize login check on load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadFooterCategories();
+            protectSubmissionForm();
+            setMinEventDate();
+        });
+    </script>
+
+</body>
+</html>
+

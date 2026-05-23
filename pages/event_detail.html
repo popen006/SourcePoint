@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SourcePoint | Event Details</title>
+    <link rel="stylesheet" href="../css/homepage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .event-detail-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .event-detail-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .event-detail-card img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            background: #f8f6f2;
+        }
+        .event-detail-body {
+            padding: 2rem;
+        }
+        .event-detail-body h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a2e;
+        }
+        .event-detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .event-detail-meta span i {
+            margin-right: 0.4rem;
+            color: #e94560;
+        }
+        .event-detail-body p {
+            line-height: 1.7;
+            color: #444;
+            margin-bottom: 1.5rem;
+        }
+        .partners-section {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .partners-section h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        .partners-section .partner-tag {
+            display: inline-block;
+            background: #e94560;
+            color: #fff;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+        }
+        .registration-status {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .registration-status.registered {
+            background: #d4edda;
+            color: #155724;
+        }
+        .registration-status.not-registered {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .btn-register, .btn-cancel-register {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-register {
+            background: #e94560;
+            color: #fff;
+        }
+        .btn-register:hover {
+            background: #d63851;
+        }
+        .btn-cancel-register {
+            background: #6c757d;
+            color: #fff;
+        }
+        .btn-cancel-register:hover {
+            background: #5a6268;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .login-prompt {
+            background: #e8f4fd;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .login-prompt a {
+            color: #3498db;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="homepage.html" class="logo-group" style="text-decoration: none;">
+                <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="nav-logo">
+                <div class="brand-info">
+                    <span class="brand-name">SourcePoint</span>
+                    <span class="brand-tagline">CamNorte Event Aggregator</span>
+                </div>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="homepage.html" class="nav-item">Home</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <span id="navUserDisplay" style="display:none; align-items:center; gap:15px;">
+                    <a href="profile.html" class="nav-item" id="userGreeting" style="cursor:pointer; text-decoration:none;"></a>
+                    <a href="#" id="logoutLink" class="nav-btn-signup">Log Out</a>
+                </span>
+                <a href="signup.html" id="signupLink" class="nav-btn-signup">Sign Up</a>
+                <a href="residentlogin.html" id="loginLink" class="nav-btn-login">Log In</a>
+            </div>
+
+            <div class="mobile-menu-icon">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="event-detail-container">
+        <a href="homepage.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Events</a>
+        
+        <div id="eventDetailContent">
+            <p style="text-align:center; color:#888;">Loading event details...</p>
+        </div>
+    </div>
+
+    <footer class="footer" style="margin-top: 3rem;">
+        <div class="footer-container">
+            <!-- Brand Section -->
+            <div class="footer-brand">
+                <div class="footer-logo-group">
+                    <img src="../assets/integ logo.png" alt="SourcePoint Logo" class="footer-logo">
+                    <div class="footer-brand-info">
+                        <span class="footer-brand-name">SourcePoint</span>
+                        <span class="footer-brand-tagline">CamNorte Event Aggregator</span>
+                    </div>
+                </div>
+                <p class="footer-description">From signals to actions in minutes. Bridging information for a better Camarines Norte.</p>
+            </div>
+
+            <!-- Products & Resources Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links-list">
+                    <li><a href="homepage.html">Home</a></li>
+                    <li><a href="camnews.html">News</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Event Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Event Categories</h4>
+                <ul class="footer-links-list" id="footer-categories">
+                    <li><a href="homepage.html?category=all">All Events</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <span class="footer-contact-icon">📍</span>
+                        <a href="https://maps.app.goo.gl/S26AAFkfkEy2Amab9" target="_blank" rel="noopener">CNSC CCMS Building, Daet, Camarines Norte</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📧</span>
+                        <a href="mailto:supportsourcepoint@gmail.com">supportsourcepoint@gmail.com</a>
+                    </li>
+                    <li>
+                        <span class="footer-contact-icon">📱</span>
+                        <a href="tel:+6398171533">+63 981 71 533</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2026 SourcePoint. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Get event ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+
+        async function loadEventDetail() {
+            const container = document.getElementById('eventDetailContent');
+            if (!eventId) {
+                container.innerHTML = '<p style="text-align:center; color:#e74c3c;">No event ID specified.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`../api/events.php?status=all&limit=100`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const event = result.events.find(e => e.id == eventId);
+                    if (!event) {
+                        container.innerHTML = '<p style="text-align:center; color:#e74c3c;">Event not found.</p>';
+                        return;
+                    }
+
+                    const eventDate = new Date(event.event_date);
+                    const formattedDate = eventDate.toLocaleDateString('en-PH', {
+                        month: 'long', day: 'numeric', year: 'numeric'
+                    });
+
+                    // Check login status and registration
+                    const sessionRes = await fetch('../api/check_session.php');
+                    const session = await sessionRes.json();
+                    const isLoggedIn = session.logged_in;
+
+                    let registrationStatus = '';
+                    let isRegistered = false;
+
+                    if (isLoggedIn) {
+                        try {
+                            const regRes = await fetch(`../api/event_registrations.php`);
+                            const regData = await regRes.json();
+                            if (regData.success) {
+                                const myReg = regData.registrations.find(r => r.event_id == eventId);
+                                isRegistered = !!myReg;
+                            }
+                        } catch(e) {}
+                    }
+
+                    // Check if event is in the past
+                    const eventDateObj = new Date(event.event_date);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    eventDateObj.setHours(0, 0, 0, 0);
+                    const isPastEvent = eventDateObj < today;
+
+                    container.innerHTML = `
+                        <div class="event-detail-card">
+                            ${event.cover_image ? `<img src="../${event.cover_image}" alt="${event.title}">` : ''}
+                            <div class="event-detail-body">
+                                <h1>${event.title}</h1>
+                                <div class="event-detail-meta">
+                                    <span><i class="fa-regular fa-calendar"></i> ${formattedDate}</span>
+                                    <span><i class="fa-solid fa-location-dot"></i> ${event.location}</span>
+                                    <span><i class="fa-solid fa-building"></i> ${event.organizer}</span>
+                                    <span><i class="fa-solid fa-tag"></i> ${event.category_name || 'General'}</span>
+                                    <span class="badge" style="background:${event.status === 'upcoming' ? '#3498db' : event.status === 'ongoing' ? '#f39c12' : event.status === 'completed' ? '#27AE60' : '#e74c3c'}; color:#fff; padding:0.2rem 0.6rem; border-radius:4px; font-size:0.8rem;">${event.status}</span>
+                                </div>
+
+                                <p>${event.description}</p>
+
+                                ${event.partner_organizations ? `
+                                <div class="partners-section">
+                                    <h3><i class="fa-solid fa-handshake"></i> Partner Organizations</h3>
+                                    ${event.partner_organizations.split(',').map(p => `<span class="partner-tag">${p.trim()}</span>`).join('')}
+                                </div>` : ''}
+
+                                ${!isLoggedIn ? `
+                                <div class="login-prompt">
+                                    <i class="fa-solid fa-info-circle"></i> 
+                                    <a href="residentlogin.html">Log in</a> or 
+                                    <a href="signup.html">sign up</a> to register for this event.
+                                </div>` : 
+                                event.status === 'cancelled' ? `
+                                <div class="registration-status" style="background:#f8d7da; color:#721c24;">
+                                    This event has been cancelled.
+                                </div>` :
+                                isPastEvent ? `
+                                <div class="registration-status" style="background:#f8d7da; color:#721c24;">
+                                    <i class="fa-solid fa-calendar-xmark"></i> Registration is closed — this event has already passed.
+                                </div>` :
+                                isRegistered ? `
+                                <div class="registration-status registered">
+                                    <i class="fa-solid fa-check-circle"></i> You are registered for this event!
+                                </div>
+                                <button class="btn-cancel-register" onclick="cancelRegistration(${eventId})">
+                                    <i class="fa-solid fa-times"></i> Cancel Registration
+                                </button>
+                                ` : `
+                                <div class="registration-status not-registered">
+                                    <i class="fa-solid fa-info-circle"></i> You are not yet registered for this event.
+                                </div>
+                                <button class="btn-register" onclick="registerForEvent(${eventId})">
+                                    <i class="fa-solid fa-check"></i> Register for this Event
+                                </button>
+                                `}
+
+                                <div id="actionMsg" style="margin-top:1rem; display:none; padding:0.75rem; border-radius:8px;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = '<p style="text-align:center; color:#e74c3c;">Error loading event details.</p>';
+            }
+        }
+
+        async function registerForEvent(id) {
+            const msg = document.getElementById('actionMsg');
+            try {
+                const res = await fetch('../api/event_registrations.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event_id: id })
+                });
+                const data = await res.json();
+                msg.style.display = 'block';
+                if (data.success) {
+                    msg.style.cssText = 'display:block; background:#d4edda; color:#155724; padding:0.75rem; border-radius:8px;';
+                    msg.textContent = '✅ ' + data.message;
+                    setTimeout(() => loadEventDetail(), 1500);
+                } else {
+                    msg.style.cssText = 'display:block; background:#f8d7da; color:#721c24; padding:0.75rem; border-radius:8px;';
+                    msg.textContent = '❌ ' + data.message;
+                }
+            } catch (e) {
+                msg.style.cssText = 'display:block; background:#f8d7da; color:#721c24; padding:0.75rem; border-radius:8px;';
+                msg.textContent = '❌ Connection error';
+            }
+        }
+
+        async function cancelRegistration(id) {
+            const msg = document.getElementById('actionMsg');
+            if (!confirm('Cancel your registration for this event?')) return;
+            try {
+                const res = await fetch('../api/event_registrations.php', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event_id: id })
+                });
+                const data = await res.json();
+                msg.style.display = 'block';
+                if (data.success) {
+                    msg.style.cssText = 'display:block; background:#d4edda; color:#155724; padding:0.75rem; border-radius:8px;';
+                    msg.textContent = '✅ ' + data.message;
+                    setTimeout(() => loadEventDetail(), 1500);
+                } else {
+                    msg.style.cssText = 'display:block; background:#f8d7da; color:#721c24; padding:0.75rem; border-radius:8px;';
+                    msg.textContent = '❌ ' + data.message;
+                }
+            } catch (e) {
+                msg.style.cssText = 'display:block; background:#f8d7da; color:#721c24; padding:0.75rem; border-radius:8px;';
+                msg.textContent = '❌ Connection error';
+            }
+        }
+
+        // Check login status
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch('../api/check_session.php');
+                const result = await response.json();
+                if (result.logged_in) {
+                    document.getElementById('loginLink').style.display = 'none';
+                    document.getElementById('signupLink').style.display = 'none';
+                    const display = document.getElementById('navUserDisplay');
+                    display.style.display = 'flex';
+                    document.getElementById('userGreeting').textContent = '👋 ' + (result.user?.name || result.admin?.name || 'User');
+                } else {
+                    document.getElementById('loginLink').style.display = '';
+                    document.getElementById('signupLink').style.display = '';
+                    document.getElementById('navUserDisplay').style.display = 'none';
+                }
+            } catch (error) {}
+        }
+
+        document.getElementById('logoutLink').addEventListener('click', async function(e) {
+            e.preventDefault();
+            await fetch('../api/logout.php', { method: 'POST' });
+            window.location.reload();
+        });
+
+        // =============================================
+        // Mobile Menu Toggle
+        // =============================================
+        const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuIcon) {
+            mobileMenuIcon.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('mobile-open');
+            });
+
+            navLinks.querySelectorAll('.nav-item, .nav-btn-signup, .nav-btn-login').forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navbar')) {
+                    mobileMenuIcon.classList.remove('active');
+                    navLinks.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // =============================================
+        // Load Footer Categories
+        // =============================================
+        async function loadFooterCategories() {
+            try {
+                const response = await fetch('../api/categories.php');
+                const result = await response.json();
+
+                if (result.success && result.categories) {
+                    const footerCategories = document.getElementById('footer-categories');
+                    footerCategories.innerHTML = '';
+
+                    result.categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="homepage.html?category=${encodeURIComponent(cat.name)}">${cat.name}</a>`;
+                        footerCategories.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to load footer categories:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadEventDetail();
+            loadFooterCategories();
+        });
+    </script>
+</body>
+</html>
